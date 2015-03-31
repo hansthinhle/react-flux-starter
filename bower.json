@@ -1,0 +1,9 @@
+{
+  "name": "generator-react-flux-seed",
+  "version": "0.0.0",
+  "dependencies": {
+    "bootstrap": "~3.3.2",
+    "toastr": "~2.1.1"
+  },
+  "devDependencies": {}
+}
