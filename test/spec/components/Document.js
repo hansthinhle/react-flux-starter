@@ -16,15 +16,15 @@ describe('Document', function () {
     expect(component).toBeDefined();
   });
 
-  it('has title are Title', function(){
+  it('title is "Title"', function(){
     expect(document.title).toBe('Title');
   });
 
-  it('has body class are body-class', function(){
+  it('body class is "body-class"', function(){
     expect(document.body.className).toMatch("body-class");
   });
 
-  it('has content are Body text', function(){
+  it('content is "Body text"', function(){
     var h1 = TestUtils.findRenderedDOMComponentWithTag(component, 'h1');
     expect(h1.getDOMNode().textContent).toEqual('Body text');
   });

@@ -1,9 +1,8 @@
 var React = require('react');
-
 var Document = React.createClass({
 	propTypes: {
 		title: React.PropTypes.string,
-		bodyClass: React.PropTypes.string 
+		bodyClass: React.PropTypes.string
 	},
 	getInitialState: function() {
 		return {
@@ -30,7 +29,7 @@ var Document = React.createClass({
 	componentWillUnmount: function() {
 		document.title = this.state.oldTitle;
 		document.body.className = this.state.oldBodyClass;
-	},
+	}
 });
 
 module.exports = Document;

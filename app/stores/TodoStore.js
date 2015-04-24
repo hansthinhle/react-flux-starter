@@ -1,9 +1,8 @@
-var ObjectAssign = require('object-assign');
 var EventEmitter = require('events').EventEmitter;
 var TodoDispatcher = require('../dispatcher/TodoDispatcher');
 var TodoConstant = require('../constants/TodoConstant');
 var localStorage = require('localStorage');
-var _ = require('underscore');
+var _ = require('lodash');
 
 var _items = [];
 var _getFromLocalStorage = function () {
@@ -17,7 +16,7 @@ var _saveToLocalStorage = function () {
   localStorage.setItem('todo', JSON.stringify(_items));
 };
 
-var TodoStore = ObjectAssign({}, EventEmitter.prototype, {
+var TodoStore = _.assign({}, EventEmitter.prototype, {
   fetchData: function(){
     _items = _getFromLocalStorage();
     this.emitChange();

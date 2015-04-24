@@ -2,50 +2,57 @@ var React = require('react');
 var TodoStore = require('../stores/TodoStore');
 var TodoConstant = require('../constants/TodoConstant');
 var TodoActionCreators = require('../actions/TodoActionCreators');
-var _ = require('underscore');
+var _ = require('lodash');
 var TodoItem = require('../components/TodoItem');
 var classNames = require('classnames');
-
-var toastr = require('toastr');
+var NotifyActionCreator = require('../actions/NotifyActionCreator');
+var RevalidatorMixin = require('../utils/RevalidatorMixin');
 
 var Todo = React.createClass({
+  mixins: [RevalidatorMixin],
+  revalidatorSchema: {
+    newItem: {
+      type: 'string',
+      required: true,
+      allowEmpty: false,
+      messages: {
+        allowEmpty: 'New item must not be empty'
+      }
+    }
+  },
   getInitialState: function () {
     return {
       newItem: '',
-      hasChange: false,
-      isValid: false,
       items: []
     };
   },
   componentWillMount: function () {
     var self = this;
     TodoStore.on(TodoConstant.ITEM_ADDED, function (item) {
-      self.setState({newItem: '', hasChange: false, isValid: false});
-      toastr.success(item + ' had been add.');
+      NotifyActionCreator.success(item + ' had been add.');
+      self.resetValidation();
+      self.setState({newItem: ''});
     });
     TodoStore.on(TodoConstant.TODO_CHANGE, function () {
       self.setState({items: TodoStore.getItems()});
-      self.forceUpdate();
     });
-    TodoStore.on(TodoConstant.ITEM_REMOVED,function(item){
-      toastr.success(item + ' had been remove');
+    TodoStore.on(TodoConstant.ITEM_REMOVED, function (item) {
+      NotifyActionCreator.success(item + ' had been remove');
     })
   },
   componentDidMount: function () {
     TodoActionCreators.fetchData();
   },
-  componentWillUnmount: function() {
+  componentWillUnmount: function () {
     TodoStore.removeAllListeners(TodoConstant.ITEM_ADDED);
     TodoStore.removeAllListeners(TodoConstant.TODO_CHANGE);
     TodoStore.removeAllListeners(TodoConstant.ITEM_REMOVED);
   },
   handleInputChange: function (event) {
-    var value = event.target.value;
-    var isValid = value.length !== 0;
     this.setState({
-      newItem: value,
-      hasChange: true,
-      isValid: isValid
+      newItem: event.target.value
+    }, function(){
+      this.validate('newItem');
     });
   },
   addItem: function () {
@@ -58,24 +65,40 @@ var Todo = React.createClass({
       )
     });
   },
+  renderFieldMessages: function (property) {
+    var errors = this.getErrors(property);
+    if (errors.length != 0) {
+      var html = errors.map(function (error) {
+        return (<span key={error.property}>{error.message}</span>);
+      });
+      return (<div className="help-block">{html}</div>);
+    }
+    return null;
+  },
   render: function () {
     var formGroupClass = classNames({
       'form-group': true,
-      'has-success' : this.state.hasChange && this.state.isValid,
-      'has-error': this.state.hasChange && !this.state.isValid
+      'has-success': this.isValid('newItem') && this.isDirty('newItem'),
+      'has-error': !this.isValid('newItem') && this.isDirty('newItem')
     });
     return (
       <div className="todo">
         <div className={formGroupClass}>
           <div className="input-group">
-            <input type="text" className="form-control" value={this.state.newItem} onChange={this.handleInputChange}></input>
+            <input type="text" className="form-control"
+              value={this.state.newItem}
+              onChange={this.handleInputChange}></input>
             <span className="input-group-btn">
-              <button className="btn btn-primary" type="button" onClick={this.addItem} disabled={!this.state.isValid}>Add</button>
+              <button className="btn btn-primary" type="button"
+                onClick={this.addItem}
+                disabled={!this.isValid() || !this.isDirty()}>Add
+              </button>
             </span>
           </div>
+          {this.renderFieldMessages('newItem')}
         </div>
         <ul className="todo-items list-group">
-        {this.renderItems()}
+          {this.renderItems()}
         </ul>
       </div>
     );

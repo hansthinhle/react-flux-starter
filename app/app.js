@@ -7,6 +7,7 @@ var RouteHandler = Router.RouteHandler;
 var classNames = require('classnames');
 
 var Header = require('./components/Header');
+var Notify = require('./components/Notify');
 
 require('bootstrap');
 require('./assets/styles/app.scss');
@@ -21,6 +22,7 @@ var App = React.createClass({
             <RouteHandler/>
           </div>
         </main>
+        <Notify/>
       </div>
     );
   }

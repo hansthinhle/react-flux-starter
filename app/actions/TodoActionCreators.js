@@ -4,7 +4,7 @@ var TodoConstant = require('../constants/TodoConstant');
 var TodoActionCreators = {
   fetchData: function(){
     TodoDispatcher.dispatch({
-      actionType: TodoConstant.FETCH_DATA,
+      actionType: TodoConstant.FETCH_DATA
     });
   },
   addNewItem: function (item) {
