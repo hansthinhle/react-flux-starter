@@ -1,17 +1,17 @@
 var React = require('react');
+var _ = require('lodash');
+var classNames = require('classnames');
 var TodoStore = require('../stores/TodoStore');
 var TodoConstant = require('../constants/TodoConstant');
 var TodoActionCreators = require('../actions/TodoActionCreators');
-var _ = require('lodash');
 var TodoItem = require('../components/TodoItem');
-var classNames = require('classnames');
-var NotifyActionCreator = require('../actions/NotifyActionCreator');
 var RevalidatorMixin = require('../utils/RevalidatorMixin');
+var Spinner = require('./Spinner');
 
 var Todo = React.createClass({
   mixins: [RevalidatorMixin],
   revalidatorSchema: {
-    newItem: {
+    item: {
       type: 'string',
       required: true,
       allowEmpty: false,
@@ -22,84 +22,81 @@ var Todo = React.createClass({
   },
   getInitialState: function () {
     return {
-      newItem: '',
+      isLoading: true,
+      isCreating: false,
+      item: null,
       items: []
     };
   },
-  componentWillMount: function () {
-    var self = this;
-    TodoStore.on(TodoConstant.ITEM_ADDED, function (item) {
-      NotifyActionCreator.success(item + ' had been add.');
-      self.resetValidation();
-      self.setState({newItem: ''});
-    });
-    TodoStore.on(TodoConstant.TODO_CHANGE, function () {
-      self.setState({items: TodoStore.getItems()});
-    });
-    TodoStore.on(TodoConstant.ITEM_REMOVED, function (item) {
-      NotifyActionCreator.success(item + ' had been remove');
-    })
-  },
   componentDidMount: function () {
-    TodoActionCreators.fetchData();
+    TodoStore.on(TodoConstant.CHANGE, function (items) {
+      this.setState({items: items});
+    }.bind(this));
+
+    TodoStore.on(TodoConstant.FETCHED, function (error, response) {
+      if (response) {
+        this.setState({isLoading: false});
+      }
+    }.bind(this));
+
+    TodoStore.on(TodoConstant.CREATED, function (error, response) {
+      this.setState({isCreating: false});
+      if (response) {
+        this.setState({item: null});
+        this.resetValidation();
+      }
+    }.bind(this));
+
+    TodoActionCreators.fetch();
   },
   componentWillUnmount: function () {
-    TodoStore.removeAllListeners(TodoConstant.ITEM_ADDED);
-    TodoStore.removeAllListeners(TodoConstant.TODO_CHANGE);
-    TodoStore.removeAllListeners(TodoConstant.ITEM_REMOVED);
+    TodoStore.removeAllListeners(TodoConstant.CHANGE);
+    TodoStore.removeAllListeners(TodoConstant.FETCHED);
+    TodoStore.removeAllListeners(TodoConstant.CREATED);
   },
   handleInputChange: function (event) {
     this.setState({
-      newItem: event.target.value
-    }, function(){
-      this.validate('newItem');
+      item: event.target.value
+    }, function () {
+      this.validate('item');
     });
   },
   addItem: function () {
-    TodoActionCreators.addNewItem(this.state.newItem);
+    this.setState({isCreating: true});
+    TodoActionCreators.create({title: this.state.item});
+  },
+  removeItem: function (item) {
+    TodoActionCreators.remove(item.id);
   },
   renderItems: function () {
-    return _.map(this.state.items, function (item, index) {
+    return _.map(this.state.items, function (item) {
       return (
-        <TodoItem key={index} item={item}/>
+        <TodoItem key={item.id} item={item} onRemove={this.removeItem}/>
       )
-    });
-  },
-  renderFieldMessages: function (property) {
-    var errors = this.getErrors(property);
-    if (errors.length != 0) {
-      var html = errors.map(function (error) {
-        return (<span key={error.property}>{error.message}</span>);
-      });
-      return (<div className="help-block">{html}</div>);
-    }
-    return null;
+    }.bind(this));
   },
   render: function () {
-    var formGroupClass = classNames({
-      'form-group': true,
-      'has-success': this.isValid('newItem') && this.isDirty('newItem'),
-      'has-error': !this.isValid('newItem') && this.isDirty('newItem')
-    });
     return (
       <div className="todo">
-        <div className={formGroupClass}>
+        <div className={this.getFieldClass('item')}>
           <div className="input-group">
             <input type="text" className="form-control"
-              value={this.state.newItem}
+              value={this.state.item}
               onChange={this.handleInputChange}></input>
             <span className="input-group-btn">
               <button className="btn btn-primary" type="button"
                 onClick={this.addItem}
-                disabled={!this.isValid() || !this.isDirty()}>Add
+                disabled={!this.isValid() || !this.isDirty() || this.state.isCreating}>
+                {this.state.isCreating ? ' Creating..' : ' Create'}
               </button>
             </span>
           </div>
-          {this.renderFieldMessages('newItem')}
+          {this.renderFieldMessages('item')}
         </div>
         <ul className="todo-items list-group">
           {this.renderItems()}
         </ul>
+        <Spinner isLoading={this.state.isLoading} isSquares={true}/>
       </div>
     );
   }

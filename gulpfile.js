@@ -36,10 +36,10 @@ gulp.task('webpack:watch', function () {
   webpackConfigs.watch = true;
   return gulp.src(['app/*.{js,jsx}'])
     .pipe(named())
-    .pipe(webpack(webpackConfigs, null, function(error, stats){
-      if(error){
-        console.log(error);
-      }else{
+    .pipe(webpack(webpackConfigs, null, function (error, stats) {
+      if (error) {
+        gulpUtil.log(error.toString());
+      } else {
         gulpUtil.log(stats.toString({
           colors: gulpUtil.colors.supportsColor,
           hash: false,
@@ -55,8 +55,8 @@ gulp.task('webpack:watch', function () {
           source: false,
           errorDetails: false
         }));
-        if(!isOpen){
-          opn('http://localhost:3000', null, function(){
+        if (!isOpen) {
+          opn('http://localhost:3000', null, function () {
             isOpen = true;
           });
         }
@@ -103,7 +103,7 @@ gulp.task('copy', function () {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('browserSync', function(callback){
+gulp.task('browserSync', function (callback) {
   browserSync({
     files: ['app/*.html', '.tmp/**/*'],
     server: {

@@ -73,5 +73,8 @@ module.exports = {
       'jQuery': 'jquery',
       'windows.jQuery': 'jquery'
     })
-  ]
+  ],
+  stats: {
+    children: false
+  }
 };

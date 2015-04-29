@@ -1,30 +1,35 @@
-var NotifyDispatcher = require('../dispatcher/NotifyDispatcher');
+var AppDispatcher = require('../dispatcher/AppDispatcher');
+var NotifyConstant = require('../constants/NotifyConstant');
 
 var NotifyActionCreator = {
-  success: function(message, title){
-    NotifyDispatcher.dispatch({
-      actionType: 'success',
+  info: function (message, title) {
+    AppDispatcher.dispatch({
+      actionType: NotifyConstant.NOTIFY,
+      type: NotifyConstant.INFO,
       message: message,
       title: title
     });
   },
-  info: function(message, title){
-    NotifyDispatcher.dispatch({
-      actionType: 'info',
+  success: function (message, title) {
+    AppDispatcher.dispatch({
+      actionType: NotifyConstant.NOTIFY,
+      type: NotifyConstant.SUCCESS,
       message: message,
       title: title
     });
   },
-  warning: function(message, title){
-    NotifyDispatcher.dispatch({
-      actionType: 'warning',
+  warning: function (message, title) {
+    AppDispatcher.dispatch({
+      actionType: NotifyConstant.NOTIFY,
+      type: NotifyConstant.WARNING,
       message: message,
       title: title
     });
   },
-  error: function(message, title){
-    NotifyDispatcher.dispatch({
-      actionType: 'error',
+  error: function (message, title) {
+    AppDispatcher.dispatch({
+      actionType: NotifyConstant.NOTIFY,
+      type: NotifyConstant.ERROR,
       message: message,
       title: title
     });

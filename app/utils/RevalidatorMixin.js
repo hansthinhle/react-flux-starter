@@ -1,3 +1,5 @@
+var React = require('react');
+var ClassNames = require('classnames');
 var _ = require('lodash');
 var ObjectPath = require('object-path');
 var Revalidator = require('revalidator');
@@ -164,6 +166,23 @@ var RevalidatorMixin = {
       return revalidatorModel.get(property + '.isDirty', false);
     }
     return revalidator.isDirty;
+  },
+  getFieldClass: function (field) {
+    return ClassNames({
+      'form-group': true,
+      'has-success': this.isValid(field) && this.isDirty(field),
+      'has-error': !this.isValid(field) && this.isDirty(field)
+    });
+  },
+  renderFieldMessages: function (property) {
+    var errors = this.getErrors(property);
+    if (errors.length != 0) {
+      var html = errors.map(function (error) {
+        return (<span key={error.property}>{error.message}</span>);
+      });
+      return (<div className="help-block">{html}</div>);
+    }
+    return null;
   }
 };
 

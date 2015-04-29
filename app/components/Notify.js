@@ -1,21 +1,22 @@
 var React = require('react');
 var NotifyStore = require('../stores/NotifyStore');
+var NotifyConstant = require('../constants/NotifyConstant');
 var Toastr = require('toastr');
 
 var Notify = React.createClass({
   componentWillMount: function () {
-    NotifyStore.on('notify', function (type, message, title) {
+    NotifyStore.on(NotifyConstant.NOTIFY, function (type, message, title) {
       switch (type) {
-        case 'success':
-          Toastr.success(message, title);
-          break;
-        case 'info':
+        case NotifyConstant.INFO:
           Toastr.info(message, title);
           break;
-        case 'warning':
+        case NotifyConstant.SUCCESS:
+          Toastr.success(message, title);
+          break;
+        case NotifyConstant.WARNING:
           Toastr.warning(message, title);
           break;
-        case 'error':
+        case NotifyConstant.ERROR:
           Toastr.error(message, title);
           break;
       }
@@ -25,7 +26,7 @@ var Notify = React.createClass({
     return null;
   },
   componentWillUnmount: function () {
-    NotifyStore.removeAllListeners('notify');
+    NotifyStore.removeAllListeners(NotifyConstant.NOTIFY);
   }
 });
 
