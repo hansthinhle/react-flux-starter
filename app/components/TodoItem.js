@@ -1,5 +1,4 @@
 var React = require('react');
-var TodoActionCreators = require('../actions/TodoActionCreators');
 
 var TodoItem = React.createClass({
   propTypes: {

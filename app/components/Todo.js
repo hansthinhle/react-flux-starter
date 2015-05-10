@@ -1,9 +1,8 @@
 var React = require('react');
 var _ = require('lodash');
-var classNames = require('classnames');
 var TodoStore = require('../stores/TodoStore');
 var TodoConstant = require('../constants/TodoConstant');
-var TodoActionCreators = require('../actions/TodoActionCreators');
+var TodoActionCreator = require('../actions/TodoActionCreator');
 var TodoItem = require('../components/TodoItem');
 var RevalidatorMixin = require('../utils/RevalidatorMixin');
 var Spinner = require('./Spinner');
@@ -28,7 +27,7 @@ var Todo = React.createClass({
       items: []
     };
   },
-  componentDidMount: function () {
+  componentWillMount: function () {
     TodoStore.on(TodoConstant.CHANGE, function (items) {
       this.setState({items: items});
     }.bind(this));
@@ -47,7 +46,7 @@ var Todo = React.createClass({
       }
     }.bind(this));
 
-    TodoActionCreators.fetch();
+    TodoActionCreator.fetch();
   },
   componentWillUnmount: function () {
     TodoStore.removeAllListeners(TodoConstant.CHANGE);
@@ -63,16 +62,16 @@ var Todo = React.createClass({
   },
   addItem: function () {
     this.setState({isCreating: true});
-    TodoActionCreators.create({title: this.state.item});
+    TodoActionCreator.create({title: this.state.item});
   },
   removeItem: function (item) {
-    TodoActionCreators.remove(item.id);
+    TodoActionCreator.remove(item.id);
   },
   renderItems: function () {
     return _.map(this.state.items, function (item) {
       return (
         <TodoItem key={item.id} item={item} onRemove={this.removeItem}/>
-      )
+      );
     }.bind(this));
   },
   render: function () {

@@ -44,7 +44,7 @@ var TodoService = {
         reject({
           status: 500,
           message: 'Current time is odd :D'
-        })
+        });
       }
     });
   },

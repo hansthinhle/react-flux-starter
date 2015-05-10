@@ -1,8 +1,15 @@
+'use strict';
+
 var React = require('react');
-var ClassNames = require('classnames');
-var _ = require('lodash');
 var ObjectPath = require('object-path');
 var Revalidator = require('revalidator');
+var ClassNames = require('classnames');
+var has = require('lodash/object/has');
+var Result = require('lodash/object/result');
+var isObject = require('lodash/lang/isObject');
+var isEmpty = require('lodash/lang/isEmpty');
+var find = require('lodash/collection/find');
+var isUndefined = require('lodash/lang/isUndefined');
 
 function parseProperty(propertyValue) {
   var object = {
@@ -11,12 +18,12 @@ function parseProperty(propertyValue) {
     errors: []
   };
   var objectModel = ObjectPath(object);
-  if (_.has(propertyValue, 'properties')) {
+  if (has(propertyValue, 'properties')) {
     for (var property in propertyValue.properties) {
       objectModel.set(property, parseProperty(propertyValue.properties[property]));
     }
   }
-  if (propertyValue.type === 'array' && _.has(propertyValue, 'items')) {
+  if (propertyValue.type === 'array' && has(propertyValue, 'items')) {
     var max = ObjectPath.get(propertyValue, 'maxItems', 100);
     for (var i = 0; i < max; i++) {
       objectModel.set(i, parseProperty(propertyValue.items));
@@ -36,7 +43,7 @@ var RevalidatorMixin = {
     };
   },
   resetValidation: function () {
-    var schema = _.result(this, 'revalidatorSchema') || {};
+    var schema = Result(this, 'revalidatorSchema') || {};
     var revalidator = this.state.Revalidator;
     var revalidatorModel = ObjectPath(revalidator);
     revalidatorModel.set('isValid', false);
@@ -48,7 +55,7 @@ var RevalidatorMixin = {
     this.setState({Revalidator: revalidator});
   },
   componentWillMount: function () {
-    if (!_.isObject(this.revalidatorSchema)) {
+    if (!isObject(this.revalidatorSchema)) {
       throw Error('invalid `revalidatorSchema` type');
     }
     this.resetValidation();
@@ -77,10 +84,10 @@ var RevalidatorMixin = {
     var subSchema;
     var subPath;
 
-    if (_.has(schema, 'properties')) {
+    if (has(schema, 'properties')) {
       var result = Revalidator.validate(object, schema);
 
-      if (_.isEmpty(path)) {
+      if (isEmpty(path)) {
         revalidatorModel.set('isValid', result.valid);
         revalidatorModel.set('errors', result.errors);
       } else {
@@ -89,24 +96,24 @@ var RevalidatorMixin = {
       }
 
       for (var schemaProperty in schema.properties) {
-        var p = _.isEmpty(path) ? schemaProperty : (path + '.' + schemaProperty);
-        revalidatorModel.set(p + '.isValid', true);
-        revalidatorModel.set(p + '.errors', []);
+        var p1 = isEmpty(path) ? schemaProperty : (path + '.' + schemaProperty);
+        revalidatorModel.set(p1 + '.isValid', true);
+        revalidatorModel.set(p1 + '.errors', []);
       }
 
-      _.each(result.errors, function (error) {
+      result.errors.forEach(function (error) {
         var errorPropertyArray = error.property.split('.');
         if (errorPropertyArray.length === 1) {
-          var p = _.isEmpty(path) ? error.property : (path + '.' + error.property);
-          var isDirty = revalidatorModel.get(p + '.isDirty', false);
+          var p2 = isEmpty(path) ? error.property : (path + '.' + error.property);
+          var isDirty = revalidatorModel.get(p2 + '.isDirty', false);
           if (isDirty) {
-            revalidatorModel.set(p + '.isValid', false);
-            var errors = revalidatorModel.get(p + '.errors', []);
-            var r = _.find(errors, function (er) {
+            revalidatorModel.set(p2 + '.isValid', false);
+            var errors = revalidatorModel.get(p2 + '.errors', []);
+            var r = find(errors, function (er) {
               return er.property === error.property;
             });
-            if (_.isUndefined(r)) {
-              revalidatorModel.push(p + '.errors', error);
+            if (isUndefined(r)) {
+              revalidatorModel.push(p2 + '.errors', error);
             }
           }
         }
@@ -117,24 +124,24 @@ var RevalidatorMixin = {
       for (var property in schema.properties) {
         subObject = objectModel.get(property, {});
         subSchema = schema.properties[property];
-        subPath = _.isEmpty(path) ? property : (path + '.' + property);
+        subPath = isEmpty(path) ? property : (path + '.' + property);
         this.validateNested(subObject, subSchema, subPath);
       }
     }
 
-    if (_.has(schema, 'items')) {
+    if (has(schema, 'items')) {
       var max = ObjectPath.get(schema, 'maxItems', 100);
       for (var i = 0; i < max; i++) {
         subObject = objectModel.get(i, {});
         subSchema = schema.items;
-        subPath = _.isEmpty(path) ? i : (path + '.' + i);
+        subPath = isEmpty(path) ? i : (path + '.' + i);
         this.validateNested(subObject, subSchema, subPath);
       }
     }
   },
   validate: function (property) {
     this.processDirty(property);
-    var schema = _.result(this, 'revalidatorSchema') || {};
+    var schema = Result(this, 'revalidatorSchema') || {};
     this.validateNested(this.state, {properties: schema});
   },
   handleValidation: function (property) {
@@ -176,11 +183,11 @@ var RevalidatorMixin = {
   },
   renderFieldMessages: function (property) {
     var errors = this.getErrors(property);
-    if (errors.length != 0) {
+    if (errors.length !== 0) {
       var html = errors.map(function (error) {
         return (<span key={error.property}>{error.message}</span>);
       });
-      return (<div className="help-block">{html}</div>);
+      return (<div className='help-block'>{html}</div>);
     }
     return null;
   }

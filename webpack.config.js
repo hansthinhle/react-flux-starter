@@ -21,6 +21,13 @@ module.exports = {
     }
   },
   module: {
+    preLoaders: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /(node_modules|bower_components)/,
+        loader: 'eslint-loader'
+      }
+    ],
     loaders: [
       {
         test: /\.(js|jsx)$/,
@@ -76,5 +83,8 @@ module.exports = {
   ],
   stats: {
     children: false
+  },
+  eslint: {
+    configFile: path.resolve(__dirname, './.eslintrc')
   }
 };
