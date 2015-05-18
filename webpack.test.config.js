@@ -1,5 +1,4 @@
 var path = require('path');
-var extractTextWebpackPlugin = require('extract-text-webpack-plugin');
 
 var scssIncludePaths = [
   path.resolve(__dirname, './app/bower_components'),
@@ -7,9 +6,6 @@ var scssIncludePaths = [
 ];
 
 module.exports = {
-  entry: {
-    app: path.resolve(__dirname, './app/app.js')
-  },
   output: {
     filename: '[name].js',
     chunkFilename: '[name].chunk.js',
@@ -42,19 +38,19 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        loader: extractTextWebpackPlugin.extract('style-loader', 'css-loader')
+        loader: 'style-loader!css-loader'
       },
       {
         test: /\.scss$/,
-        loader: extractTextWebpackPlugin.extract('style-loader', 'css-loader!sass-loader?outputStyle=expanded&' + scssIncludePaths.join('&includePaths[]='))
+        loader: 'style-loader!css-loader!sass-loader?outputStyle=expanded&' + scssIncludePaths.join('&includePaths[]=')
       },
       {
         test: /\.sass$/,
-        loader: extractTextWebpackPlugin.extract('style-loader', 'css-loader!sass-loader?indentedSyntax=sass')
+        loader: 'style-loader!css-loader!sass-loader?indentedSyntax=sass'
       },
       {
         test: /\.less$/,
-        loader: extractTextWebpackPlugin.extract('style-loader', 'css-loader!less-loader')
+        loader: 'style-loader!css-loader!less-loader'
       },
       {
         test: /\.(png|jpg|gif)$/,
@@ -66,9 +62,7 @@ module.exports = {
       }
     ]
   },
-  plugins: [
-    new extractTextWebpackPlugin('[name].css')
-  ],
+  plugins: [],
   stats: {
     children: false
   },

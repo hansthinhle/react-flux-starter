@@ -1,4 +1,5 @@
 {
+  "parser": "babel-eslint",
   "env": {
     "browser": true,
     "node": true
@@ -21,6 +22,8 @@
     "jsx": true
   },
   "rules": {
+    "strict": 0,
+    "curly": 0,
     "quotes": [2, "single"],
     "no-underscore-dangle": 0,
     "camelcase": [2, {"properties": "never"}],
@@ -52,9 +55,7 @@
     "afterEach": false,
     "expect": false,
     "window": false,
-    "document": false,
-    "FileReader": false,
-    "videojs": false
+    "document": false
   },
   "plugins": [
     "react"

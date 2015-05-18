@@ -1,4 +1,5 @@
 var React = require('react');
+
 var Document = React.createClass({
   propTypes: {
     title: React.PropTypes.string,

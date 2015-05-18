@@ -1,14 +1,11 @@
 var React = require('react');
 var Router = require('react-router');
-var Route = Router.Route;
-var NotFoundRoute = Router.NotFoundRoute;
-var DefaultRoute = Router.DefaultRoute;
-var RouteHandler = Router.RouteHandler;
+var {Route, DefaultRoute, NotFoundRoute, RouteHandler} = Router;
 
 var Header = require('./components/Header');
-var Notify = require('./components/Notify');
+var Footer = require('./components/Footer');
 
-require('bootstrap');
+require('./bower_components/bootstrap-customize/css/bootstrap.css');
 require('./assets/styles/app.scss');
 
 var App = React.createClass({
@@ -21,29 +18,31 @@ var App = React.createClass({
             <RouteHandler/>
           </div>
         </main>
-        <Notify/>
+        <Footer/>
       </div>
     );
   }
 });
 
+var PageHome = require('react-proxy-plus?name=page-normal!./components/PageHome');
+var PageNormal = require('react-proxy-plus?name=page-normal!./components/PageNormal');
+var PageNested = require('react-proxy-plus?name=page-nested!./components/PageNested');
+var PageNestedDefault = require('react-proxy-plus?name=page-nested-default!./components/PageNestedDefault');
+var PageNestedSub = require('react-proxy-plus?name=page-nested-sub!./components/PageNestedSub');
+var PageNotFound = require('react-proxy-plus?name=page-not-found!./components/PageNotFound');
+
 var routes = (
-  <Route name="app" path="/" handler={App}>
-    <DefaultRoute handler={require('./components/PageHome')}/>
-    <Route name="page-normal"
-      handler={require('react-proxy?name=page-normal!./components/PageNormal')}/>
-    <Route name="page-nested"
-      handler={require('react-proxy?name=page-nested!./components/PageNested')}>
-      <DefaultRoute
-        handler={require('react-proxy?name=subpage-default!./components/SubPageDefault')}/>
-      <Route name="sub-page"
-        handler={require('react-proxy?name=subpage!./components/SubPage')}/>
+  <Route name="app" path='/' handler={App}>
+    <DefaultRoute handler={PageHome}/>
+    <Route name="page-normal" path='normal' handler={PageNormal}/>
+    <Route name="page-nested" path='nested' handler={PageNested}>
+      <DefaultRoute handler={PageNestedDefault}/>
+      <Route name="page-nested-sub" path='sub' handler={PageNestedSub}/>
     </Route>
-    <NotFoundRoute name="not-found"
-      handler={require('react-proxy?name=page-not-found!./components/PageNotFound')}/>
+    <NotFoundRoute name="page-not-found" handler={PageNotFound}/>
   </Route>
 );
 
 Router.run(routes, Router.HistoryLocation, function (Handler) {
-  React.render(<Handler/>, document.getElementById('app'));
+  React.render(<Handler/>, document.body);
 });

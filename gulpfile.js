@@ -4,7 +4,6 @@ var gulp = require('gulp');
 var gulpUtil = require('gulp-util');
 var del = require('del');
 var webpack = require('gulp-webpack');
-var webpackConfigs = require('./webpack.config.js');
 var named = require('vinyl-named');
 var minifyHtml = require('gulp-minify-html');
 var uglify = require('gulp-uglify');
@@ -19,22 +18,35 @@ var opn = require('opn');
 
 var isBuild = false;
 var isOpen = false;
+var autoprefixerBrowsers = [
+  'ie >= 10',
+  'ie_mob >= 10',
+  'ff >= 30',
+  'chrome >= 34',
+  'safari >= 7',
+  'opera >= 23',
+  'ios >= 7',
+  'android >= 4.4',
+  'bb >= 10'
+];
 
 gulp.task('clean', function () {
   del.sync(['.tmp', 'dist']);
 });
 
 gulp.task('webpack', function () {
+  var webpackConfigs = require('./webpack.config.js');
   webpackConfigs.quiet = !isBuild;
-  return gulp.src(['app/*.{js,jsx}'])
+  return gulp.src('app/*.{js,jsx}')
     .pipe(named())
     .pipe(webpack(webpackConfigs))
     .pipe(gulp.dest('.tmp'));
 });
 
 gulp.task('webpack:watch', function () {
+  var webpackConfigs = require('./webpack.config.js');
   webpackConfigs.watch = true;
-  return gulp.src(['app/*.{js,jsx}'])
+  return gulp.src('app/*.{js,jsx}')
     .pipe(named())
     .pipe(webpack(webpackConfigs, null, function (error, stats) {
       if (error) {
@@ -79,7 +91,7 @@ gulp.task('scripts', function () {
 
 gulp.task('styles', function () {
   return gulp.src('.tmp/*.css')
-    .pipe(autoprefixer('last 1 version'))
+    .pipe(autoprefixer(autoprefixerBrowsers))
     .pipe(csso())
     .pipe(gulp.dest('dist'));
 });
@@ -141,7 +153,12 @@ gulp.task('build', function (callback) {
 gulp.task('serve:dist', ['build'], function () {
   browserSync({
     server: {
-      baseDir: 'dist'
+      baseDir: 'dist',
+      middleware: [
+        modRewrite([
+          '!\\.\\w+$ /index.html [L]'
+        ])
+      ]
     }
   });
 });

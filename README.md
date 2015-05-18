@@ -1,1 +1,1 @@
-# generator-react-flux-seed
+# React Flux Starter

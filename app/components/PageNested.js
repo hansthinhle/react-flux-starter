@@ -1,7 +1,6 @@
 var React = require('react');
 var Document = require('./Document');
-var RouteHandler = require('react-router').RouteHandler;
-var Link = require('react-router').Link;
+var {Link, RouteHandler} = require('react-router');
 
 var PageNested = React.createClass({
   render: function () {
@@ -18,7 +17,7 @@ var PageNested = React.createClass({
                   <Link to="page-nested">Default</Link>
                 </li>
                 <li>
-                  <Link to="sub-page">Subpage</Link>
+                  <Link to="page-nested-sub">Sub page</Link>
                 </li>
               </nav>
             </aside>
