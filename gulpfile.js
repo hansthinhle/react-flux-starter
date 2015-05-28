@@ -35,7 +35,7 @@ gulp.task('clean', function () {
 });
 
 gulp.task('webpack', function () {
-  var webpackConfigs = require('./webpack.config.js');
+  var webpackConfigs = require('./webpack.dev.config.js');
   webpackConfigs.quiet = !isBuild;
   return gulp.src('app/*.{js,jsx}')
     .pipe(named())
@@ -44,7 +44,7 @@ gulp.task('webpack', function () {
 });
 
 gulp.task('webpack:watch', function () {
-  var webpackConfigs = require('./webpack.config.js');
+  var webpackConfigs = require('./webpack.dev.config.js');
   webpackConfigs.watch = true;
   return gulp.src('app/*.{js,jsx}')
     .pipe(named())
