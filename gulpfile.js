@@ -15,8 +15,9 @@ var modRewrite = require('connect-modrewrite');
 var runSequence = require('run-sequence');
 var karma = require('gulp-karma');
 var opn = require('opn');
+var webpackStatsHelper = require('./webpack.stats.helper');
+var replace = require('gulp-replace-task');
 
-var isBuild = false;
 var isOpen = false;
 var autoprefixerBrowsers = [
   'ie >= 10',
@@ -34,10 +35,10 @@ gulp.task('clean', function () {
   del.sync(['.tmp', 'dist']);
 });
 
-gulp.task('webpack', function () {
+gulp.task('webpack:dev', function () {
   var webpackConfigs = require('./webpack.dev.config.js');
-  webpackConfigs.quiet = !isBuild;
-  return gulp.src('app/*.{js,jsx}')
+  webpackConfigs.quiet = true;
+  return gulp.src(['app/*.{js,jsx}'])
     .pipe(named())
     .pipe(webpack(webpackConfigs))
     .pipe(gulp.dest('.tmp'));
@@ -77,8 +78,21 @@ gulp.task('webpack:watch', function () {
     .pipe(gulp.dest('.tmp'));
 });
 
-gulp.task('html', ['webpack'], function () {
+gulp.task('webpack:build', function () {
+  var webpackConfigs = require('./webpack.build.config.js');
+  return gulp.src(['app/*.{js,jsx}'])
+    .pipe(named())
+    .pipe(webpack(webpackConfigs))
+    .pipe(gulp.dest('.tmp'));
+});
+
+gulp.task('html', ['webpack:build'], function () {
+  var patterns = webpackStatsHelper.getReplacePatterns();
   return gulp.src('app/*.html')
+    .pipe(replace({
+      patterns: patterns,
+      usePrefix: false
+    }))
     .pipe(minifyHtml({empty: true, cdata: true, conditionals: true}))
     .pipe(gulp.dest('dist'));
 });
@@ -134,7 +148,7 @@ gulp.task('browserSync', function (callback) {
 });
 
 gulp.task('serve', function (callback) {
-  runSequence('clean', 'webpack', 'browserSync', 'webpack:watch', callback);
+  runSequence('clean', 'webpack:dev', 'browserSync', 'webpack:watch', callback);
 });
 
 gulp.task('test', function () {
@@ -146,7 +160,6 @@ gulp.task('test', function () {
 });
 
 gulp.task('build', function (callback) {
-  isBuild = true;
   runSequence('clean', 'html', 'scripts', 'styles', 'images', 'fonts', 'copy', callback);
 });
 

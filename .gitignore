@@ -3,3 +3,4 @@
 dist
 node_modules
 app/bower_components
+webpack.stats.json

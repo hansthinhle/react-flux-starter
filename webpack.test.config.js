@@ -62,11 +62,11 @@ module.exports = {
       }
     ]
   },
-  plugins: [],
   stats: {
     children: false
   },
   eslint: {
     configFile: path.resolve(__dirname, './.eslintrc')
-  }
+  },
+  plugins: []
 };
