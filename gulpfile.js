@@ -30,6 +30,38 @@ var autoprefixerBrowsers = [
   'android >= 4.4',
   'bb >= 10'
 ];
+var webpackStatsOptions = {
+  colors: gulpUtil.colors.supportsColor,
+  hash: false,
+  timings: false,
+  chunks: false,
+  chunkModules: false,
+  modules: false,
+  children: false,
+  version: true,
+  cached: false,
+  cachedAssets: false,
+  reasons: false,
+  source: false,
+  errorDetails: false
+};
+
+function openApp() {
+  if (!isOpen) {
+    opn('http://localhost:3000', null, function () {
+      isOpen = true;
+    });
+  }
+}
+
+function handleWebpack(error, stats) {
+  if (error) {
+    gulpUtil.log(error.toString());
+  } else {
+    gulpUtil.log(stats.toString(webpackStatsOptions));
+    openApp();
+  }
+}
 
 gulp.task('clean', function () {
   del.sync(['.tmp', 'dist']);
@@ -49,32 +81,7 @@ gulp.task('webpack:watch', function () {
   webpackConfigs.watch = true;
   return gulp.src('app/*.{js,jsx}')
     .pipe(named())
-    .pipe(webpack(webpackConfigs, null, function (error, stats) {
-      if (error) {
-        gulpUtil.log(error.toString());
-      } else {
-        gulpUtil.log(stats.toString({
-          colors: gulpUtil.colors.supportsColor,
-          hash: false,
-          timings: false,
-          chunks: false,
-          chunkModules: false,
-          modules: false,
-          children: false,
-          version: true,
-          cached: false,
-          cachedAssets: false,
-          reasons: false,
-          source: false,
-          errorDetails: false
-        }));
-        if (!isOpen) {
-          opn('http://localhost:3000', null, function () {
-            isOpen = true;
-          });
-        }
-      }
-    }))
+    .pipe(webpack(webpackConfigs, null, handleWebpack))
     .pipe(gulp.dest('.tmp'));
 });
 
