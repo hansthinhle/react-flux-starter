@@ -159,7 +159,7 @@ gulp.task('browserSync', function (callback) {
     '!\\.\\w+$ /index.html [L]'
   ]));
   browserSync({
-    files: ['app/*.html', '.tmp/**/*'],
+    files: ['app/*.html', '.tmp/**/*', '!.tmp/**/*.css'],
     server: {
       baseDir: ['.tmp', 'app'],
       middleware: middleware
