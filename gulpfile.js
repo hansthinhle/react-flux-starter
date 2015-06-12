@@ -17,6 +17,8 @@ var karma = require('gulp-karma');
 var opn = require('opn');
 var webpackStatsHelper = require('./webpack.stats.helper');
 var replace = require('gulp-replace-task');
+var proxy = require('proxy-middleware');
+var url = require('url');
 
 var isOpen = false;
 var autoprefixerBrowsers = [
@@ -45,6 +47,12 @@ var webpackStatsOptions = {
   source: false,
   errorDetails: false
 };
+var proxyOptions = [
+  {
+    endpoint: 'http://localhost:8000/api',
+    route: '/api'
+  }
+];
 
 function openApp() {
   if (!isOpen) {
@@ -61,6 +69,13 @@ function handleWebpack(error, stats) {
     gulpUtil.log(stats.toString(webpackStatsOptions));
     openApp();
   }
+}
+
+function createProxyOption(endpoint, route) {
+  var proxyOption = url.parse(endpoint);
+  proxyOption.route = route;
+  proxyOption.rejectUnauthorized = false;
+  return proxyOption;
 }
 
 gulp.task('clean', function () {
@@ -137,15 +152,17 @@ gulp.task('copy', function () {
 });
 
 gulp.task('browserSync', function (callback) {
+  var middleware = proxyOptions.map(function (proxyOption) {
+    return proxy(createProxyOption(proxyOption.endpoint, proxyOption.route));
+  });
+  middleware.push(modRewrite([
+    '!\\.\\w+$ /index.html [L]'
+  ]));
   browserSync({
     files: ['app/*.html', '.tmp/**/*'],
     server: {
       baseDir: ['.tmp', 'app'],
-      middleware: [
-        modRewrite([
-          '!\\.\\w+$ /index.html [L]'
-        ])
-      ]
+      middleware: middleware
     },
     port: 3000,
     reloadOnRestart: false,
@@ -171,14 +188,16 @@ gulp.task('build', function (callback) {
 });
 
 gulp.task('serve:dist', ['build'], function () {
+  var middleware = proxyOptions.map(function (proxyOption) {
+    return proxy(createProxyOption(proxyOption.endpoint, proxyOption.route));
+  });
+  middleware.push(modRewrite([
+    '!\\.\\w+$ /index.html [L]'
+  ]));
   browserSync({
     server: {
       baseDir: 'dist',
-      middleware: [
-        modRewrite([
-          '!\\.\\w+$ /index.html [L]'
-        ])
-      ]
+      middleware: middleware
     }
   });
 });
