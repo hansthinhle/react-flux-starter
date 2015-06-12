@@ -1,0 +1,43 @@
+@import "variables";
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 50%, 0);
+  }
+
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes throbber {
+  0% {
+    background: lighten($primary, 40%);
+  }
+  10% {
+    background: darken($primary, 10%);
+  }
+  40% {
+    background: lighten($primary, 40%);
+  }
+}
