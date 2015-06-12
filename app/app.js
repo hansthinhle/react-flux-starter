@@ -11,10 +11,10 @@ require('./assets/styles/app.scss');
 var App = React.createClass({
   render: function () {
     return (
-      <div className={"layout-page"}>
+      <div className='layout-page'>
         <Header/>
-        <main className={"layout-main"}>
-          <div className={"container"}>
+        <main className='layout-main'>
+          <div className='container'>
             <RouteHandler/>
           </div>
         </main>
