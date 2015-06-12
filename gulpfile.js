@@ -48,10 +48,10 @@ var webpackStatsOptions = {
   errorDetails: false
 };
 var proxyOptions = [
-  {
-    endpoint: 'http://localhost:8000/api',
-    route: '/api'
-  }
+  //{
+  //  endpoint: 'http://localhost:8000/api',
+  //  route: '/api'
+  //}
 ];
 
 function openApp() {
