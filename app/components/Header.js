@@ -2,8 +2,6 @@ var React = require('react');
 var {Link} = require('react-router');
 var logoImg = require('../assets/images/logo.svg');
 
-require('../assets/styles/header.scss');
-
 var Header = React.createClass({
   render: function () {
     return (
