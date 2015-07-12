@@ -1,3 +1,4 @@
+var webpack = require('webpack');
 var path = require('path');
 var extractTextWebpackPlugin = require('extract-text-webpack-plugin');
 
@@ -7,11 +8,14 @@ var scssIncludePaths = [
 ];
 
 module.exports = {
-  entry: {
-    app: path.resolve(__dirname, './app/app.js')
-  },
+  entry: [
+    'webpack-dev-server/client?http://localhost:3000',
+    'webpack/hot/only-dev-server',
+    path.resolve(__dirname, './app/app.js')
+  ],
   output: {
-    filename: '[name].js',
+    path: path.resolve('./dist'),
+    filename: 'app.js',
     chunkFilename: '[name].chunk.js',
     publicPath: '/'
   },
@@ -34,7 +38,7 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         exclude: /(node_modules|bower_components)/,
-        loader: 'babel-loader?stage=0'
+        loader: 'react-hot-loader!babel-loader'
       },
       {
         test: /\.json$/,
@@ -66,13 +70,13 @@ module.exports = {
       }
     ]
   },
-  stats: {
-    children: false
-  },
   eslint: {
     configFile: path.resolve(__dirname, './.eslintrc')
   },
   plugins: [
-    new extractTextWebpackPlugin('[name].css')
-  ]
+    new extractTextWebpackPlugin('app.css'),
+    new webpack.HotModuleReplacementPlugin()
+  ],
+  devtool: 'eval',
+  debug: true
 };

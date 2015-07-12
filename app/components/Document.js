@@ -3,7 +3,8 @@ var React = require('react');
 var Document = React.createClass({
   propTypes: {
     title: React.PropTypes.string,
-    bodyClass: React.PropTypes.string
+    bodyClass: React.PropTypes.string,
+    children: React.PropTypes.any.isRequired
   },
   getInitialState: function () {
     return {
