@@ -3,7 +3,13 @@
   "version": "0.0.0",
   "description": "",
   "scripts": {
-    "start": "node webpack.dev.server.js"
+    "start": "NODE_ENV=development node webpack.dev.server.js",
+    "devserver": "NODE_ENV=development node webpack.dev.server.js",
+    "test": "NODE_ENV=development ./node_modules/karma/bin/karma start",
+    "prebuildserver": "NODE_ENV=production node webpack.prebuild.server.js",
+    "prebuild": "node scripts/pre-build.js",
+    "build": "NODE_ENV=production webpack -p --config webpack.build.config.js --progress --profile --colors",
+    "postbuild": "node scripts/post-build.js"
   },
   "dependencies": {
     "flux": "^2.0.3",
@@ -21,6 +27,7 @@
     "eslint-loader": "^0.14.1",
     "eslint-plugin-react": "^2.3.0",
     "file-loader": "^0.8.1",
+    "frep": "^0.2.3",
     "jasmine-core": "^2.2.0",
     "json-loader": "^0.5.1",
     "karma": "^0.12.31",
@@ -30,6 +37,7 @@
     "less": "^2.4.0",
     "less-loader": "^2.2.0",
     "node-sass": "^3.1.1",
+    "opn": "^3.0.2",
     "phantomjs": "^1.9.17",
     "react-hot-loader": "^1.2.8",
     "sass-loader": "^1.0.2",

@@ -1,13 +1,12 @@
 var WebpackDevServer = require('webpack-dev-server');
 var webpack = require('webpack');
-var config = require('./webpack.dev.config');
+var config = require('./webpack.prebuild.config');
 var path = require('path');
 var opn = require('opn');
 
 var webpackDevServer = new WebpackDevServer(webpack(config), {
   contentBase: path.join(__dirname, './app'),
   publicPath: config.output.publicPath,
-  hot: true,
   historyApiFallback: true,
   stats: {
     colors: true,

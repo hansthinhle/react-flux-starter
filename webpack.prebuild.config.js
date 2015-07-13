@@ -1,6 +1,5 @@
 var webpack = require('webpack');
 var path = require('path');
-var webpackStatsHelper = require('./lib/webpack-stats-helper.js');
 
 var entry = {
   app: path.join(__dirname, './app/app.js')
@@ -31,9 +30,9 @@ module.exports = {
     return result;
   }, {}),
   output: {
-    path: path.join('./dist'),
-    filename: '[hash].js',
-    chunkFilename: '[chunkhash].js',
+    path: path.join(__dirname, './dist'),
+    filename: 'app.js',
+    chunkFilename: '[name].chunk.js',
     publicPath: '/'
   },
   resolve: {
@@ -79,11 +78,11 @@ module.exports = {
       },
       {
         test: /\.(png|jpg|gif)$/,
-        loader: 'file-loader?name=[hash].[ext]'
+        loader: 'file-loader?name=[name].[ext]'
       },
       {
         test: /\.(ttf|eot|svg|woff(2)?)(\S+)?$/,
-        loader: 'file-loader?name=[hash].[ext]'
+        loader: 'file-loader?name=[name].[ext]'
       }
     ]
   },
@@ -99,8 +98,7 @@ module.exports = {
         NODE_ENV: JSON.stringify('production')
       }
     }),
-    new webpack.NoErrorsPlugin(),
-    new webpackStatsHelper.saveToFile(path.join(__dirname, './dist/webpack.stats.json'))
+    new webpack.NoErrorsPlugin()
   ],
   eslint: {
     configFile: path.join(__dirname, './.eslintrc')

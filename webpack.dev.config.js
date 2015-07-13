@@ -2,12 +2,12 @@ var webpack = require('webpack');
 var path = require('path');
 
 var entry = {
-  app: path.resolve(__dirname, './app/app.js')
+  app: path.join(__dirname, './app/app.js')
 };
 
 var scssIncludePaths = [
-  path.resolve(__dirname, './app/bower_components'),
-  path.resolve(__dirname, './node_modules')
+  path.join(__dirname, './app/bower_components'),
+  path.join(__dirname, './node_modules')
 ];
 
 var autoprefixer = {
@@ -34,16 +34,16 @@ module.exports = {
     return result;
   }, {}),
   output: {
-    path: path.resolve('./dist'),
-    filename: 'app.js',
+    path: path.join(__dirname, './dist'),
+    filename: '[name].js',
     chunkFilename: '[name].chunk.js',
     publicPath: '/'
   },
   resolve: {
     extensions: ['', '.jsx', '.js'],
     alias: {
-      app: path.resolve(__dirname, './app'),
-      test: path.resolve(__dirname, './test')
+      app: path.join(__dirname, './app'),
+      test: path.join(__dirname, './test')
     }
   },
   module: {
@@ -91,10 +91,15 @@ module.exports = {
     ]
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('development')
+      }
+    })
   ],
   eslint: {
-    configFile: path.resolve(__dirname, './.eslintrc')
+    configFile: path.join(__dirname, './.eslintrc')
   },
   devtool: 'eval',
   debug: true
