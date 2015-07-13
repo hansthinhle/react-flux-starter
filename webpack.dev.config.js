@@ -1,18 +1,38 @@
 var webpack = require('webpack');
 var path = require('path');
-var extractTextWebpackPlugin = require('extract-text-webpack-plugin');
+
+var entry = {
+  app: path.resolve(__dirname, './app/app.js')
+};
 
 var scssIncludePaths = [
   path.resolve(__dirname, './app/bower_components'),
   path.resolve(__dirname, './node_modules')
 ];
 
+var autoprefixer = {
+  browsers: [
+    'ie >= 10',
+    'ie_mob >= 10',
+    'ff >= 30',
+    'chrome >= 34',
+    'safari >= 7',
+    'opera >= 23',
+    'ios >= 7',
+    'android >= 4.4',
+    'bb >= 10'
+  ]
+};
+
 module.exports = {
-  entry: [
-    'webpack-dev-server/client?http://localhost:3000',
-    'webpack/hot/only-dev-server',
-    path.resolve(__dirname, './app/app.js')
-  ],
+  entry: Object.keys(entry).reduce(function (result, key) {
+    result[key] = [
+      'webpack-dev-server/client?http://localhost:3000',
+      'webpack/hot/dev-server',
+      entry[key]
+    ];
+    return result;
+  }, {}),
   output: {
     path: path.resolve('./dist'),
     filename: 'app.js',
@@ -46,19 +66,19 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        loader: extractTextWebpackPlugin.extract('style-loader', 'css-loader')
+        loader: 'style-loader!css-loader'
       },
       {
         test: /\.scss$/,
-        loader: extractTextWebpackPlugin.extract('style-loader', 'css-loader!sass-loader?outputStyle=expanded&' + scssIncludePaths.join('&includePaths[]='))
+        loader: 'style-loader!css-loader!autoprefixer-loader?' + JSON.stringify(autoprefixer) + '!sass-loader?outputStyle=expanded&' + scssIncludePaths.join('&includePaths[]=')
       },
       {
         test: /\.sass$/,
-        loader: extractTextWebpackPlugin.extract('style-loader', 'css-loader!sass-loader?indentedSyntax=sass')
+        loader: 'style-loader!css-loader!autoprefixer-loader?' + JSON.stringify(autoprefixer) + '!sass-loader?indentedSyntax=sass'
       },
       {
         test: /\.less$/,
-        loader: extractTextWebpackPlugin.extract('style-loader', 'css-loader!less-loader')
+        loader: 'style-loader!css-loader!autoprefixer-loader?' + JSON.stringify(autoprefixer) + '!less-loader'
       },
       {
         test: /\.(png|jpg|gif)$/,
@@ -70,13 +90,12 @@ module.exports = {
       }
     ]
   },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin()
+  ],
   eslint: {
     configFile: path.resolve(__dirname, './.eslintrc')
   },
-  plugins: [
-    new extractTextWebpackPlugin('app.css'),
-    new webpack.HotModuleReplacementPlugin()
-  ],
   devtool: 'eval',
   debug: true
 };
