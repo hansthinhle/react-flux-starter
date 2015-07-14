@@ -3,8 +3,7 @@ var path = require('path');
 var config = require('./webpack.prebuild.config');
 
 var options = {
-  contentBase: path.join(__dirname, './app'),
-  hot: true
+  contentBase: path.join(__dirname, './app')
 };
 
-Server(config, options, 'localhost', 3000);
+Server(config, options, 'localhost', 8080);
