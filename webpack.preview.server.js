@@ -1,6 +1,6 @@
 var Server = require('./lib/server');
 var path = require('path');
-var config = require('./webpack.prebuild.config');
+var config = require('./webpack.preview.config');
 
 var options = {
   contentBase: path.join(__dirname, './app')

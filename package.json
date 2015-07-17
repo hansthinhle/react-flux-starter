@@ -4,9 +4,8 @@
   "description": "",
   "scripts": {
     "start": "NODE_ENV=development node webpack.dev.server.js",
-    "devserver": "NODE_ENV=development node webpack.dev.server.js",
     "test": "NODE_ENV=development ./node_modules/karma/bin/karma start",
-    "prebuildserver": "NODE_ENV=production node webpack.prebuild.server.js",
+    "preview": "NODE_ENV=production node webpack.preview.server.js",
     "prebuild": "node scripts/pre-build.js",
     "build": "NODE_ENV=production webpack -p --config webpack.build.config.js --progress --profile --colors",
     "postbuild": "node scripts/post-build.js"
