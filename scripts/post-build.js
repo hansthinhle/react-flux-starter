@@ -1,7 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 var replace = require('frep');
-var webpackStatsHelper = require('../lib/webpack-stats-helper');
+var webpackStatsHelper = require('../helper/webpack-stats-helper');
 
 var indexAppPath = path.join(__dirname, '../app/index.html');
 var indexDistPath = path.join(__dirname, '../dist/index.html');

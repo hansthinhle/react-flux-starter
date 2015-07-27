@@ -1,4 +1,4 @@
-var WebpackConfig = require('./lib/webpack-config');
+var WebpackConfig = require('./helper/webpack-config');
 
 module.exports = WebpackConfig({
   hot: false,

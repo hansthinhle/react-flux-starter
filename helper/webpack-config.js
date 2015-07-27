@@ -1,7 +1,7 @@
 var merge = require('lodash.merge');
 var webpack = require('webpack');
 var path = require('path');
-var webpackStatsHelper = require('../lib/webpack-stats-helper.js');
+var webpackStatsHelper = require('./webpack-stats-helper');
 var url = require('url');
 
 module.exports = function (options) {
