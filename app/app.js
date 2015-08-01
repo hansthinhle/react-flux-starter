@@ -26,12 +26,12 @@ var App = React.createClass({
   }
 });
 
-var PageHome = require('react-proxy-plus?name=page-normal!./components/PageHome');
-var PageNormal = require('react-proxy-plus?name=page-normal!./components/PageNormal');
-var PageNested = require('react-proxy-plus?name=page-nested!./components/PageNested');
-var PageNestedDefault = require('react-proxy-plus?name=page-nested-default!./components/PageNestedDefault');
-var PageNestedSub = require('react-proxy-plus?name=page-nested-sub!./components/PageNestedSub');
-var PageNotFound = require('react-proxy-plus?name=page-not-found!./components/PageNotFound');
+var PageHome = require('react-proxy?name=page-normal!./components/PageHome');
+var PageNormal = require('react-proxy?name=page-normal!./components/PageNormal');
+var PageNested = require('react-proxy?name=page-nested!./components/PageNested');
+var PageNestedDefault = require('react-proxy?name=page-nested-default!./components/PageNestedDefault');
+var PageNestedSub = require('react-proxy?name=page-nested-sub!./components/PageNestedSub');
+var PageNotFound = require('react-proxy?name=page-not-found!./components/PageNotFound');
 
 var routes = (
   <Route name="app" path='/' handler={App}>
