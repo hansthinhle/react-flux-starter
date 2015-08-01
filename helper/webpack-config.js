@@ -3,6 +3,7 @@ var webpack = require('webpack');
 var path = require('path');
 var webpackStatsHelper = require('./webpack-stats-helper');
 var url = require('url');
+var pkg = require('../package.json');
 
 module.exports = function (options) {
   var defaultOptions = {
@@ -14,7 +15,8 @@ module.exports = function (options) {
     failOnError: false,
     host: '0.0.0.0',
     port: 3000,
-    https: false
+    https: false,
+    banner: false
   };
 
   options = merge(defaultOptions, options || {});
@@ -41,6 +43,11 @@ module.exports = function (options) {
       'bb >= 10'
     ]
   };
+
+  var banner =
+    'Name: ' + pkg.name + '\n' +
+    'Version: ' + pkg.version + '\n' +
+    'Description: ' + pkg.description;
 
   var loaders = [
     {
@@ -122,6 +129,10 @@ module.exports = function (options) {
 
   if (options.saveStats) {
     plugins.push(new webpackStatsHelper.saveToFile(path.join(__dirname, '../dist/webpack.stats.json')));
+  }
+
+  if (options.banner) {
+    plugins.push(new webpack.BannerPlugin(banner));
   }
 
   var config = {
