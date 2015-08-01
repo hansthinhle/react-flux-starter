@@ -1,3 +1,5 @@
+require('babel-core/polyfill');
+
 var React = require('react');
 var Router = require('react-router');
 var {Route, DefaultRoute, NotFoundRoute, RouteHandler} = Router;
