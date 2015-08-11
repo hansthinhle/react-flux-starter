@@ -111,7 +111,7 @@ module.exports = function (options) {
     }));
   } else {
     plugins.push(new webpack.optimize.UglifyJsPlugin({
-      compressor: {
+      compress: {
         warnings: false
       },
       output: {
