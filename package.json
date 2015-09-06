@@ -6,9 +6,11 @@
     "start": "NODE_ENV=development node webpack.dev.server.js",
     "test": "NODE_ENV=development ./node_modules/karma/bin/karma start",
     "preview": "NODE_ENV=production node webpack.preview.server.js",
-    "prebuild": "node scripts/pre-build.js",
-    "build": "NODE_ENV=production webpack -p --config webpack.build.config.js --progress --profile --colors --bail",
-    "postbuild": "node scripts/post-build.js"
+    "build:clean": "rimraf dist",
+    "build:webpack": "NODE_ENV=production webpack -p --config webpack.build.config.js --progress --profile --colors --bail",
+    "build:html": "node scripts/build-html.js",
+    "build:copy": "node scripts/build-copy.js",
+    "build": "npm run build:clean && npm run build:webpack && npm run build:html && npm run build:copy"
   },
   "dependencies": {
     "flux": "^2.0.3",
@@ -17,6 +19,7 @@
     "react-router": "^0.13.3"
   },
   "devDependencies": {
+    "async": "^1.4.2",
     "autoprefixer": "^6.0.0",
     "babel-core": "^5.3.1",
     "babel-eslint": "^3.1.5",
@@ -29,6 +32,8 @@
     "express": "^4.13.1",
     "file-loader": "^0.8.1",
     "frep": "^0.2.3",
+    "fs-extra": "^0.24.0",
+    "glob": "^5.0.14",
     "http-proxy": "^1.11.1",
     "jasmine-core": "^2.2.0",
     "json-loader": "^0.5.1",
@@ -44,6 +49,7 @@
     "phantomjs": "^1.9.17",
     "postcss-loader": "^0.6.0",
     "react-hot-loader": "^1.2.8",
+    "rimraf": "^2.4.3",
     "sass-loader": "^1.0.2",
     "style-loader": "^0.12.2",
     "webpack": "^1.10.1",
