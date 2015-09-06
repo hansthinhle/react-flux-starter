@@ -3,6 +3,7 @@ var webpack = require('webpack');
 var path = require('path');
 var webpackStatsHelper = require('./webpack-stats-helper');
 var url = require('url');
+var autoprefixer = require('autoprefixer');
 var pkg = require('../package.json');
 
 module.exports = function (options) {
@@ -30,7 +31,7 @@ module.exports = function (options) {
     path.join(__dirname, '../node_modules')
   ];
 
-  var autoprefixer = {
+  var autoprefixerOptions = {
     browsers: [
       'ie >= 10',
       'ie_mob >= 10',
@@ -65,15 +66,15 @@ module.exports = function (options) {
     },
     {
       test: /\.scss$/,
-      loader: 'style-loader!css-loader!autoprefixer-loader?' + JSON.stringify(autoprefixer) + '!sass-loader?outputStyle=expanded&' + scssIncludePaths.join('&includePaths[]=')
+      loader: 'style-loader!css-loader!postcss-loader!sass-loader?outputStyle=expanded&' + scssIncludePaths.join('&includePaths[]=')
     },
     {
       test: /\.sass$/,
-      loader: 'style-loader!css-loader!autoprefixer-loader?' + JSON.stringify(autoprefixer) + '!sass-loader?indentedSyntax=sass'
+      loader: 'style-loader!css-loader!postcss-loader!sass-loader?indentedSyntax=sass'
     },
     {
       test: /\.less$/,
-      loader: 'style-loader!css-loader!autoprefixer-loader?' + JSON.stringify(autoprefixer) + '!less-loader'
+      loader: 'style-loader!css-loader!postcss-loader!less-loader'
     }
   ];
 
@@ -176,6 +177,9 @@ module.exports = function (options) {
       configFile: path.join(__dirname, '../.eslintrc'),
       failOnError: options.failOnError,
       emitError: options.failOnError
+    },
+    postcss: function () {
+      return [autoprefixer(autoprefixerOptions)];
     },
     node: {
       net: 'mock',
