@@ -28,8 +28,9 @@
     "no-underscore-dangle": 0,
     "camelcase": [2, {"properties": "never"}],
     "new-cap": 0,
-    "react/jsx-boolean-value": 2,
-    "react/jsx-quotes": 2,
+    "react/display-name": 0,
+    "react/jsx-boolean-value": [2, "always"],
+    "react/jsx-quotes": [2, "single"],
     "react/jsx-no-undef": 2,
     "react/jsx-sort-props": 0,
     "react/jsx-sort-prop-types": 0,
@@ -38,11 +39,12 @@
     "react/no-did-mount-set-state": 2,
     "react/no-did-update-set-state": 2,
     "react/no-multi-comp": 2,
-    "react/no-unknown-property": 1,
+    "react/no-unknown-property": 2,
     "react/prop-types": 1,
     "react/react-in-jsx-scope": 2,
     "react/self-closing-comp": 2,
-    "react/wrap-multilines": 0
+    "react/sort-comp": 0,
+    "react/wrap-multilines": [2, {"declaration": false, "assignment": false}]
   },
   "globals": {
     "inject": false,

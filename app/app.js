@@ -34,14 +34,14 @@ var PageNestedSub = require('react-proxy?name=page-nested-sub!./components/PageN
 var PageNotFound = require('react-proxy?name=page-not-found!./components/PageNotFound');
 
 var routes = (
-  <Route name="app" path='/' handler={App}>
+  <Route name='app' path='/' handler={App}>
     <DefaultRoute handler={PageHome}/>
-    <Route name="page-normal" path='normal' handler={PageNormal}/>
-    <Route name="page-nested" path='nested' handler={PageNested}>
+    <Route name='page-normal' path='normal' handler={PageNormal}/>
+    <Route name='page-nested' path='nested' handler={PageNested}>
       <DefaultRoute handler={PageNestedDefault}/>
-      <Route name="page-nested-sub" path='sub' handler={PageNestedSub}/>
+      <Route name='page-nested-sub' path='sub' handler={PageNestedSub}/>
     </Route>
-    <NotFoundRoute name="page-not-found" handler={PageNotFound}/>
+    <NotFoundRoute name='page-not-found' handler={PageNotFound}/>
   </Route>
 );
 
