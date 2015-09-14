@@ -98,19 +98,19 @@ module.exports = function (options) {
     });
   }
 
-  var plugins = [];
+  var plugins = [
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV)
+      }
+    })
+  ];
 
   if (options.hot) {
     plugins.push(new webpack.HotModuleReplacementPlugin());
   }
 
-  if (!options.optimize) {
-    plugins.push(new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('development')
-      }
-    }));
-  } else {
+  if (options.optimize) {
     plugins.push(new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false
@@ -120,11 +120,6 @@ module.exports = function (options) {
       }
     }));
     plugins.push(new webpack.optimize.DedupePlugin());
-    plugins.push(new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('production')
-      }
-    }));
     plugins.push(new webpack.NoErrorsPlugin());
   }
 
