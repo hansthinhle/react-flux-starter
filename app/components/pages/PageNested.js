@@ -10,7 +10,7 @@ class PageNested extends React.Component {
 
   render() {
     return (
-      <Document title='Page Nested | React-Flux' bodyClass='page-nested'>
+      <Document title='Page Nested | React-Flux' className='page-nested'>
         <div>
           <div className='row'>
             <div className='col-sm-9'>

@@ -1,6 +1,6 @@
 export default {
   path: 'nested',
-  getComponents(location, callback) {
+  getComponent(location, callback) {
     require.ensure([], require => {
       callback(null, require('../../components/pages/PageNested'));
     }, 'page-nested');

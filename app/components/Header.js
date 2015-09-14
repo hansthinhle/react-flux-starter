@@ -1,9 +1,10 @@
-var React = require('react');
-var {Link} = require('react-router');
-var logoImg = require('../assets/images/logo.svg');
+import React from 'react';
+import {Link} from 'react-router';
 
-var Header = React.createClass({
-  render: function () {
+const logo = require('../assets/images/logo.svg');
+
+class Header extends React.Component {
+  render() {
     return (
       <header className='layout-header'>
         <nav className='navbar navbar-inverse'>
@@ -16,7 +17,7 @@ var Header = React.createClass({
                 <span className='icon-bar'></span>
               </button>
               <Link className='navbar-brand' to='/'>
-                <img width='20' src={logoImg}></img>
+                <img width='20' src={logo}></img>
               </Link>
             </div>
             <div className='collapse navbar-collapse'>
@@ -31,6 +32,7 @@ var Header = React.createClass({
       </header>
     );
   }
-});
+}
 
-module.exports = Header;
+export default Header;
+

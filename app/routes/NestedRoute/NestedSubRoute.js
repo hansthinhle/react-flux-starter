@@ -1,10 +1,8 @@
 export default {
   path: 'sub',
-  getComponents(location, callback) {
+  getComponent(location, callback) {
     require.ensure([], require => {
-      callback(null, [
-        require('../../components/pages/PageNestedSub')
-      ]);
+      callback(null, require('../../components/pages/PageNestedSub'));
     }, 'page-nested-sub');
   }
 };

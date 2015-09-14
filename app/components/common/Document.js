@@ -1,37 +1,38 @@
-var React = require('react');
+import React from 'react';
 
-var Document = React.createClass({
-  propTypes: {
+class Document extends React.Component {
+  static propTypes = {
     title: React.PropTypes.string,
-    bodyClass: React.PropTypes.string,
+    className: React.PropTypes.string,
     children: React.PropTypes.any.isRequired
-  },
-  getInitialState: function () {
-    return {
-      oldTitle: document.title,
-      oldBodyClass: document.body.className
-    };
-  },
-  componentWillMount: function () {
+  };
+
+  state = {
+    oldTitle: document.title,
+    oldClassName: document.body.className
+  };
+
+  componentWillMount = () => {
     if (this.props.title) {
       document.title = this.props.title;
     }
-    if (this.props.bodyClass) {
-      var newClass = this.state.oldBodyClass + ' ' + this.props.bodyClass;
-      document.body.className = newClass.trim().replace('  ', ' ');
+    if (this.props.className) {
+      let className = this.state.oldClassName + ' ' + this.props.className;
+      document.body.className = className.trim().replace('  ', ' ');
     }
-  },
-  render: function () {
+  };
+
+  componentWillUnmount = () => {
+    document.title = this.state.oldTitle;
+    document.body.className = this.state.oldClassName;
+  };
+
+  render() {
     if (this.props.children) {
       return React.Children.only(this.props.children);
-    } else {
-      return null;
     }
-  },
-  componentWillUnmount: function () {
-    document.title = this.state.oldTitle;
-    document.body.className = this.state.oldBodyClass;
+    return null;
   }
-});
+}
 
-module.exports = Document;
+export default Document;

@@ -1,6 +1,6 @@
 export default {
   path: 'normal',
-  getComponents(location, callback) {
+  getComponent(location, callback) {
     require.ensure([], require => {
       callback(null, require('../components/pages/PageNormal'));
     }, 'page-normal');

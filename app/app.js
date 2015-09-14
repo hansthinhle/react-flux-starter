@@ -1,6 +1,7 @@
 import 'babel-core/polyfill';
 
 import React from 'react';
+import ReactDOM from 'react-dom';
 import Router from 'react-router';
 import createHistory from 'history/lib/createBrowserHistory';
 import App from './components/App.js';
@@ -20,9 +21,22 @@ const routes = {
 
 const history = createHistory();
 
+let rootInstance = null;
+
 const run = () => {
-  React.render(<Router routes={routes} history={history}/>, document.body);
+  rootInstance = ReactDOM.render(
+    <Router routes={routes} history={history}/>,
+    document.getElementById('app')
+  );
 };
+
+if (module.hot) {
+  require('react-hot-loader/Injection').RootInstanceProvider.injectProvider({
+    getRootInstances() {
+      return [rootInstance];
+    }
+  });
+}
 
 if (window.addEventListener) {
   window.addEventListener('DOMContentLoaded', run);
