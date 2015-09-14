@@ -15,14 +15,14 @@ var Header = React.createClass({
                 <span className='icon-bar'></span>
                 <span className='icon-bar'></span>
               </button>
-              <Link className='navbar-brand' to='app'>
+              <Link className='navbar-brand' to='/'>
                 <img width='20' src={logoImg}></img>
               </Link>
             </div>
             <div className='collapse navbar-collapse'>
               <ul className='nav navbar-nav navbar-right'>
-                <li><Link to='page-normal'>Page Normal</Link></li>
-                <li><Link to='page-nested'>Page Nested</Link></li>
+                <li><Link to='/normal'>Page Normal</Link></li>
+                <li><Link to='/nested'>Page Nested</Link></li>
                 <li><a href='/other'>Page Not Found</a></li>
               </ul>
             </div>

@@ -1,58 +1,28 @@
-require('babel-core/polyfill');
+import 'babel-core/polyfill';
 
-var React = require('react');
-var Router = require('react-router');
-var {Route, DefaultRoute, NotFoundRoute, RouteHandler} = Router;
+import React from 'react';
+import Router from 'react-router';
+import createHistory from 'history/lib/createBrowserHistory';
+import App from './components/App.js';
 
-var Header = require('./components/Header');
-var Footer = require('./components/Footer');
+import './bower_components/bootstrap-customize/css/bootstrap.css';
+import './assets/styles/app.scss';
 
-require('./bower_components/bootstrap-customize/css/bootstrap.css');
-require('./assets/styles/app.scss');
+const routes = {
+  path: '/',
+  component: App,
+  childRoutes: [
+    require('./routes/NormalRoute'),
+    require('./routes/NestedRoute'),
+    require('./routes/NotFoundRoute')
+  ]
+};
 
-var App = React.createClass({
-  render: function () {
-    return (
-      <div className='layout-page'>
-        <Header/>
-        <main className='layout-main'>
-          <div className='container'>
-            <RouteHandler/>
-          </div>
-        </main>
-        <Footer/>
-      </div>
-    );
-  }
-});
+const history = createHistory();
 
-var PageHome = require('react-proxy?name=page-normal!./components/PageHome');
-var PageNormal = require('react-proxy?name=page-normal!./components/PageNormal');
-var PageNested = require('react-proxy?name=page-nested!./components/PageNested');
-var PageNestedDefault = require('react-proxy?name=page-nested-default!./components/PageNestedDefault');
-var PageNestedSub = require('react-proxy?name=page-nested-sub!./components/PageNestedSub');
-var PageNotFound = require('react-proxy?name=page-not-found!./components/PageNotFound');
-
-var routes = (
-  <Route name='app' path='/' handler={App}>
-    <DefaultRoute handler={PageHome}/>
-    <Route name='page-normal' path='normal' handler={PageNormal}/>
-    <Route name='page-nested' path='nested' handler={PageNested}>
-      <DefaultRoute handler={PageNestedDefault}/>
-      <Route name='page-nested-sub' path='sub' handler={PageNestedSub}/>
-    </Route>
-    <NotFoundRoute name='page-not-found' handler={PageNotFound}/>
-  </Route>
-);
-
-function run() {
-  Router.run(routes, Router.HistoryLocation, function (Handler) {
-    if (document.body.className.indexOf('render') === -1) {
-      document.body.className += document.body.className.length ? ' render' : 'render';
-    }
-    React.render(<Handler/>, document.body);
-  });
-}
+const run = () => {
+  React.render(<Router routes={routes} history={history}/>, document.body);
+};
 
 if (window.addEventListener) {
   window.addEventListener('DOMContentLoaded', run);
