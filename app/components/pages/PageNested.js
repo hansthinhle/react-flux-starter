@@ -1,7 +1,6 @@
 import React from 'react';
 import Document from '../common/Document.js';
 import {Link} from 'react-router';
-import PageNestedDefault from './PageNestedDefault.js';
 
 class PageNested extends React.Component {
   static propTypes = {
@@ -14,7 +13,7 @@ class PageNested extends React.Component {
         <div>
           <div className='row'>
             <div className='col-sm-9'>
-              {this.props.children || <PageNestedDefault/>}
+              {this.props.children}
             </div>
             <aside className='col-sm-3'>
               <nav className='nav nav-pill'>

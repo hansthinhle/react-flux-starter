@@ -1,7 +1,6 @@
 import React from 'react';
 import Header from './Header';
 import Footer from './Footer';
-import PageHome from './pages/PageHome.js';
 
 class App extends React.Component {
   static propTypes = {
@@ -14,7 +13,7 @@ class App extends React.Component {
         <Header/>
         <main className='layout-main'>
           <div className='container'>
-            {this.props.children || <PageHome/>}
+            {this.props.children}
           </div>
         </main>
         <Footer/>

@@ -5,6 +5,13 @@ export default {
       callback(null, require('../../components/pages/PageNested'));
     }, 'page-nested');
   },
+  indexRoute: {
+    getComponent(location, callback) {
+      require.ensure([], require => {
+        callback(null, require('../../components/pages/PageNestedDefault'));
+      }, 'page-nested');
+    }
+  },
   getChildRoutes(location, callback) {
     require.ensure([], () => {
       callback(null, [
