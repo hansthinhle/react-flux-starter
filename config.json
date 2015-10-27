@@ -1,0 +1,15 @@
+{
+  "host": "localhost",
+  "port": 3000,
+  "https": false,
+  "proxy": [
+    {
+      "path": "/api/*",
+      "target": "http://localhost:4000"
+    },
+    {
+      "path": "/oauth/*",
+      "target": "http://localhost:4000"
+    }
+  ]
+}

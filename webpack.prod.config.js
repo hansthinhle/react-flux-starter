@@ -1,6 +1,10 @@
 var webpack = require('webpack');
 var path = require('path');
 var autoprefixer = require('autoprefixer');
+var cssnano = require('cssnano');
+var pkg = require('./package.json');
+var webpackStatsHelper = require('./webpack-stats-helper');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var scssIncludePaths = [
   path.join(__dirname, 'app/bower_components'),
@@ -21,14 +25,19 @@ var autoprefixerOptions = {
   ]
 };
 
+var banner =
+  'Name: ' + pkg.name + '\n' +
+  'Version: ' + pkg.version + '\n' +
+  'Description: ' + pkg.description;
+
 module.exports = {
   entry: {
-    app: ['webpack-hot-middleware/client', path.join(__dirname, 'app/app.js')]
+    app: path.join(__dirname, 'app/app.js')
   },
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: '[name].js',
-    chunkFilename: '[name].chunk.js',
+    filename: '[hash].js',
+    chunkFilename: '[chunkhash].js',
     publicPath: '/'
   },
   resolve: {
@@ -57,27 +66,27 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        loader: 'style-loader!css-loader'
+        loader: ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader!')
       },
       {
         test: /\.scss$/,
-        loader: 'style-loader!css-loader!postcss-loader!sass-loader?outputStyle=expanded&' + scssIncludePaths.join('&includePaths[]=')
+        loader: ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader!sass-loader?outputStyle=expanded&' + scssIncludePaths.join('&includePaths[]='))
       },
       {
         test: /\.sass$/,
-        loader: 'style-loader!css-loader!postcss-loader!sass-loader?indentedSyntax=sass'
+        loader: ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader!sass-loader?indentedSyntax=sass')
       },
       {
         test: /\.less$/,
-        loader: 'style-loader!css-loader!postcss-loader!less-loader'
+        loader: ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader!less-loader')
       },
       {
         test: /\.(png|jpg|gif)$/,
-        loader: 'file-loader?name=[name].[ext]'
+        loader: 'file-loader?name=[hash].[ext]'
       },
       {
         test: /\.(ttf|eot|svg|woff(2)?)(\S+)?$/,
-        loader: 'file-loader?name=[name].[ext]'
+        loader: 'file-loader?name=[hash].[ext]'
       }
     ]
   },
@@ -87,22 +96,37 @@ module.exports = {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV)
       }
     }),
-    new webpack.HotModuleReplacementPlugin(),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      },
+      output: {
+        comments: false
+      }
+    }),
+    new webpack.optimize.DedupePlugin(),
+    new ExtractTextPlugin('[contenthash].css'),
+    new webpack.BannerPlugin(banner),
+    new webpackStatsHelper.StatsToFilePlugin(path.join(__dirname, 'dist/webpack.stats.json')),
     new webpack.NoErrorsPlugin()
   ],
   eslint: {
     configFile: path.join(__dirname, '.eslintrc'),
-    failOnError: false,
-    emitError: false
+    failOnError: true,
+    emitError: true
   },
   postcss: function () {
-    return [autoprefixer(autoprefixerOptions)];
+    return [
+      autoprefixer(autoprefixerOptions),
+      cssnano({discardComments: {removeAll: true}})
+    ];
   },
   node: {
     net: 'mock',
     dns: 'mock'
   },
-  debug: true,
-  devtool: 'eval'
+  stats: {
+    children: false,
+    version: false
+  }
 };
-

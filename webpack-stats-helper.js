@@ -8,7 +8,7 @@ function getExtension(file) {
 }
 
 var webpackStatsHelper = {
-  saveToFile: function (fileName, options) {
+  StatsToFilePlugin: function (fileName, options) {
     fileName = fileName || './webpack.stats.json';
     options = options || {};
     return function () {
@@ -36,29 +36,29 @@ var webpackStatsHelper = {
       });
     }
   },
-  getProperties: function (property, fileName) {
+  getProperty: function (name, fileName) {
     fileName = fileName || './webpack.stats.json';
     var stats = require(fileName);
-    return stats[property];
+    return stats[name];
   },
   getReplacePatterns: function (fileName) {
     var patterns = [];
-    var assetsByChunkName = this.getProperties('assetsByChunkName', fileName) || {};
+    var assetsByChunkName = this.getProperty('assetsByChunkName', fileName) || {};
     for (var chunkName in assetsByChunkName) {
       if (assetsByChunkName.hasOwnProperty(chunkName)) {
         var assets = assetsByChunkName[chunkName];
         if (typeof assets === 'string') {
-          var ext = getExtension(assets);
+          var ext = path.extname(assets);
           var pattern = {
-            pattern: chunkName + '.' + ext,
+            pattern: chunkName + ext,
             replacement: assets
           };
           patterns.push(pattern);
         } else {
           assets.forEach(function (asset) {
-            var ext = getExtension(asset);
+            var ext = path.extname(asset);
             var pattern = {
-              pattern: chunkName + '.' + ext,
+              pattern: chunkName + ext,
               replacement: asset
             };
             patterns.push(pattern);
