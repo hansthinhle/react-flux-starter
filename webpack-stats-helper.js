@@ -1,12 +1,6 @@
 var fs = require('fs');
 var path = require('path');
 
-function getExtension(file) {
-  file = file || '';
-  var arr = file.split('.');
-  return arr.slice(-1)[0];
-}
-
 var webpackStatsHelper = {
   StatsToFilePlugin: function (fileName, options) {
     fileName = fileName || './webpack.stats.json';
