@@ -4,6 +4,7 @@
   "description": "",
   "scripts": {
     "start": "NODE_ENV=development node webpack.dev.server.js",
+    "lint": "NODE_ENV=development gulp lint",
     "favicons": "NODE_ENV=development gulp favicons",
     "build": "NODE_ENV=production gulp build"
   },

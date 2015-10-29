@@ -4,6 +4,7 @@ var pkg = require('./package.json');
 var gulp = require('gulp');
 var util = require('gulp-util');
 var favicons = require('favicons');
+var eslint = require('gulp-eslint');
 var del = require('del');
 var webpackStatsHelper = require('./webpack-stats-helper');
 var path = require('path');
@@ -39,6 +40,14 @@ gulp.task('favicons', function (callback) {
     util.log('Generated favicons metadata at', util.colors.magenta('app/_favicons.html'));
     callback();
   });
+});
+
+gulp.task('lint', function () {
+  return gulp
+    .src(['app/**/*.js'])
+    .pipe(eslint())
+    .pipe(eslint.format())
+    .pipe(eslint.failAfterError());
 });
 
 gulp.task('clean', function () {

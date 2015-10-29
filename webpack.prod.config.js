@@ -7,7 +7,7 @@ var webpackStatsHelper = require('./webpack-stats-helper');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var scssIncludePaths = [
-  path.join(__dirname, 'app/bower_components'),
+  path.join(__dirname, 'app/assets/bower_components'),
   path.join(__dirname, 'node_modules')
 ];
 

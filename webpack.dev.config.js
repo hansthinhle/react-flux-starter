@@ -3,7 +3,7 @@ var path = require('path');
 var autoprefixer = require('autoprefixer');
 
 var scssIncludePaths = [
-  path.join(__dirname, 'app/bower_components'),
+  path.join(__dirname, 'app/assets/bower_components'),
   path.join(__dirname, 'node_modules')
 ];
 
