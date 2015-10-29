@@ -61,7 +61,9 @@ proxyOptions.forEach(function (option) {
 
 app.get('*', function (req, res) {
   var indexSource = fs.readFileSync(path.join(__dirname, 'app/index.html'));
-  res.send(preProcess.preprocess(indexSource));
+  res.send(preProcess.preprocess(indexSource, null, {
+    srcDir: path.join(__dirname, 'app')
+  }));
 });
 
 var server = http.createServer(app);

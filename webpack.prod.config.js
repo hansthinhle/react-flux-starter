@@ -128,5 +128,8 @@ module.exports = {
   stats: {
     children: false,
     version: false
-  }
+  },
+  progress: true,
+  profile: true,
+  bail: true
 };
