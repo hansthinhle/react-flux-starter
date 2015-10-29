@@ -1,7 +1,6 @@
 {
   "host": "localhost",
   "port": 3000,
-  "https": false,
   "proxy": [
     {
       "path": "/api/*",

@@ -1,29 +1,29 @@
-var path = require('path');
 var express = require('express');
-var httpProxy = require('http-proxy');
-var opn = require('opn');
-var http = require('http');
-var url = require('url');
 var webpack = require('webpack');
 var webpackDevConfig = require('./webpack.dev.config');
 var webpackDevMiddleware = require('webpack-dev-middleware');
 var webpackHotMiddleware = require('webpack-hot-middleware');
-var config = require('./config.json');
 var fs = require('fs');
+var path = require('path');
 var preProcess = require('preprocess');
+var http = require('http');
+var opn = require('opn');
+var httpProxy = require('http-proxy');
+var config = require('./config.json');
 
-var app = express();
-var compiler = webpack(webpackDevConfig);
+var host = config.host || 'localhost';
+var port = config.port || 3000;
+var proxyOptions = config.proxy || [];
+var serverUrl = 'http://' + host + ':' + port;
+
 var proxy = httpProxy.createProxyServer({
   changeOrigin: true,
   ws: true
 });
-var server = http.createServer(app);
 
-var host = config.host || 'localhost';
-var port = config.port || 3000;
-var https = config.https || false;
-var proxyOptions = config.proxy || [];
+var compiler = webpack(webpackDevConfig);
+
+var app = express();
 
 app.use(webpackDevMiddleware(compiler, {
   noInfo: true,
@@ -47,10 +47,7 @@ app.use(webpackDevMiddleware(compiler, {
 
 app.use(webpackHotMiddleware(compiler));
 
-app.get('*', function (req, res) {
-  var indexSource = fs.readFileSync(path.join(__dirname, 'app/index.html'));
-  res.send(preProcess.preprocess(indexSource));
-});
+app.use('/assets', express.static(path.join(__dirname, 'app/assets')));
 
 proxyOptions.forEach(function (option) {
   app.all(option.path, function (req, res) {
@@ -62,12 +59,14 @@ proxyOptions.forEach(function (option) {
   });
 });
 
-server.listen(port, function () {
-  var appUrl = url.format({
-    hostname: host,
-    port: port,
-    protocol: https ? 'https' : 'http'
-  });
-  console.log('Listening at ' + appUrl);
-  opn(appUrl);
+app.get('*', function (req, res) {
+  var indexSource = fs.readFileSync(path.join(__dirname, 'app/index.html'));
+  res.send(preProcess.preprocess(indexSource));
+});
+
+var server = http.createServer(app);
+
+server.listen(port, host, function () {
+  console.log('Listening at ' + serverUrl);
+  opn(serverUrl);
 });
