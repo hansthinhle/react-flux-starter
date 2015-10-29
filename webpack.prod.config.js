@@ -81,7 +81,7 @@ module.exports = {
         loader: ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader!less-loader')
       },
       {
-        test: /\.(png|jpg|gif)$/,
+        test: /\.(png|jpg|gif|swf)$/,
         loader: 'file-loader?name=[hash].[ext]'
       },
       {
@@ -97,6 +97,7 @@ module.exports = {
       }
     }),
     new webpack.optimize.UglifyJsPlugin({
+      sourceMap: false,
       compress: {
         warnings: false
       },
@@ -135,6 +136,8 @@ module.exports = {
     children: false,
     version: false
   },
+  debug: false,
+  devtool: 'eval',
   profile: true,
   bail: true
 };
