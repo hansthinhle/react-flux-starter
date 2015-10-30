@@ -108,14 +108,7 @@ module.exports = {
     new webpack.optimize.DedupePlugin(),
     new ExtractTextPlugin('[contenthash].css'),
     new webpack.BannerPlugin(banner),
-    new webpackStatsHelper.StatsToFilePlugin(path.join(__dirname, 'dist/webpack.stats.json')),
-    new webpack.NoErrorsPlugin(),
-    new webpack.ProgressPlugin(function (percentage, message) {
-      var percent = Math.round(percentage * 100);
-      process.stderr.clearLine();
-      process.stderr.cursorTo(0);
-      process.stderr.write(percent + '% ' + message);
-    })
+    new webpackStatsHelper.StatsToFilePlugin(path.join(__dirname, 'dist/webpack.stats.json'))
   ],
   eslint: {
     configFile: path.join(__dirname, '.eslintrc'),
@@ -138,6 +131,7 @@ module.exports = {
   },
   debug: false,
   devtool: 'eval',
+  progress: true,
   profile: true,
   bail: true
 };
