@@ -17,6 +17,8 @@ var webpackStream = require('webpack-stream');
 var webpackConfig = require('./webpack.prod.config');
 var webpack = require('webpack');
 var runSequence = require('run-sequence');
+var imagemin = require('gulp-imagemin');
+var pngquant = require('imagemin-pngquant');
 
 gulp.task('favicons', function (callback) {
   favicons({
@@ -102,6 +104,17 @@ gulp.task('copy', function () {
     .pipe(gulp.dest('dist'));
 });
 
+gulp.task('image', function () {
+  return gulp
+    .src(['dist/**/*.{jpg,png,gif,svg}'])
+    .pipe(imagemin({
+      progressive: true,
+      interlaced: true,
+      use: [pngquant()]
+    }))
+    .pipe(gulp.dest('dist'));
+});
+
 gulp.task('build', function (callback) {
-  runSequence('clean', 'webpack', 'revFavicons', 'html', 'copy', callback);
+  runSequence('clean', 'webpack', 'revFavicons', 'html', 'copy', 'image', callback);
 });
