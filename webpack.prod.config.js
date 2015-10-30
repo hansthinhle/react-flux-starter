@@ -2,7 +2,6 @@ var webpack = require('webpack');
 var path = require('path');
 var autoprefixer = require('autoprefixer');
 var cssnano = require('cssnano');
-var pkg = require('./package.json');
 var webpackStatsHelper = require('./webpack-stats-helper');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
@@ -24,11 +23,6 @@ var autoprefixerOptions = {
     'bb >= 10'
   ]
 };
-
-var banner =
-  'Name: ' + pkg.name + '\n' +
-  'Version: ' + pkg.version + '\n' +
-  'Description: ' + pkg.description;
 
 module.exports = {
   entry: {
@@ -108,7 +102,6 @@ module.exports = {
     }),
     new webpack.optimize.DedupePlugin(),
     new ExtractTextPlugin('[contenthash].css'),
-    new webpack.BannerPlugin(banner),
     new webpackStatsHelper.StatsToFilePlugin(path.join(__dirname, 'dist/webpack.stats.json'))
   ],
   eslint: {
