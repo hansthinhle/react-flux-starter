@@ -66,7 +66,7 @@ gulp.task('revFavicons', function () {
     fileNameManifest: 'rev-favicons-manifest.json',
     transformFilename: function (file, hash) {
       var ext = path.extname(file.path);
-      return hash.substr(0, 32) + ext;
+      return hash.substr(0, webpackConfig.output.hashDigestLength) + ext;
     }
   });
   return gulp

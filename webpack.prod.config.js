@@ -36,6 +36,7 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, 'dist'),
+    hashDigestLength: 32,
     filename: '[hash].js',
     chunkFilename: '[chunkhash].js',
     publicPath: '/'
@@ -130,7 +131,7 @@ module.exports = {
     version: false
   },
   debug: false,
-  devtool: 'eval',
+  devtool: false,
   progress: true,
   profile: true,
   bail: true
