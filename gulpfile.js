@@ -104,7 +104,7 @@ gulp.task('copy', function () {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('image', function () {
+gulp.task('images', function () {
   return gulp
     .src(['dist/**/*.{jpg,png,gif,svg}'])
     .pipe(imagemin({
@@ -116,5 +116,5 @@ gulp.task('image', function () {
 });
 
 gulp.task('build', function (callback) {
-  runSequence('clean', 'webpack', 'revFavicons', 'html', 'copy', 'image', callback);
+  runSequence('clean', 'webpack', 'revFavicons', 'html', 'copy', 'images', callback);
 });
