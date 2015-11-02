@@ -91,6 +91,7 @@ module.exports = {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV)
       }
     }),
+    new ExtractTextPlugin('[contenthash].css'),
     new webpack.optimize.UglifyJsPlugin({
       sourceMap: false,
       compress: {
@@ -101,7 +102,6 @@ module.exports = {
       }
     }),
     new webpack.optimize.DedupePlugin(),
-    new ExtractTextPlugin('[contenthash].css'),
     new webpackStatsHelper.StatsToFilePlugin(path.join(__dirname, 'dist/webpack.stats.json'))
   ],
   eslint: {
@@ -112,7 +112,10 @@ module.exports = {
   postcss: function () {
     return [
       autoprefixer(autoprefixerOptions),
-      cssnano({discardComments: {removeAll: true}})
+      cssnano({
+        safe: true,
+        discardComments: {removeAll: true}
+      })
     ];
   },
   node: {
@@ -124,7 +127,6 @@ module.exports = {
     version: false
   },
   debug: false,
-  devtool: false,
   progress: true,
   profile: true,
   bail: true
