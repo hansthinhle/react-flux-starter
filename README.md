@@ -12,6 +12,7 @@
 - Extract text from bundle into a file (extract-text-webpack-plugin)
 - Minify css (postcss, autoprefixer, cssnano)
 - Minify images (gulp-imagemin)
+- ...
 
 ## Getting Started
 
