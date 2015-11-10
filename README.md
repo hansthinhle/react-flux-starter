@@ -1,5 +1,7 @@
 # React Flux Starter
 
+React + Flux + React router + Webpack + Babel + ...
+
 ## Features included
 
 - Webpack dev server with proxy support (express, http-proxy, webpack-dev-middleware, webpack-hot-middleware, babel-plugin-react-transform, react-transform-hmr)
