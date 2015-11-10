@@ -12,12 +12,12 @@ class Header extends React.Component {
             <div className='navbar-header'>
               <button type='button' className='navbar-toggle collapsed'>
                 <span className='sr-only'>Toggle navigation</span>
-                <span className='icon-bar'></span>
-                <span className='icon-bar'></span>
-                <span className='icon-bar'></span>
+                <span className='icon-bar'/>
+                <span className='icon-bar'/>
+                <span className='icon-bar'/>
               </button>
               <Link className='navbar-brand' to='/'>
-                <img width='20' src={logo}></img>
+                <img width='20' src={logo}/>
               </Link>
             </div>
             <div className='collapse navbar-collapse'>
