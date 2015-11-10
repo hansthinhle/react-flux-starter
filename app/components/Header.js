@@ -1,9 +1,10 @@
-var React = require('react');
-var {Link} = require('react-router');
-var logoImg = require('../assets/images/logo.svg');
+import React from 'react';
+import {Link} from 'react-router';
 
-var Header = React.createClass({
-  render: function () {
+const logo = require('../assets/images/logo.svg');
+
+class Header extends React.Component {
+  render() {
     return (
       <header className='layout-header'>
         <nav className='navbar navbar-inverse'>
@@ -11,18 +12,18 @@ var Header = React.createClass({
             <div className='navbar-header'>
               <button type='button' className='navbar-toggle collapsed'>
                 <span className='sr-only'>Toggle navigation</span>
-                <span className='icon-bar'></span>
-                <span className='icon-bar'></span>
-                <span className='icon-bar'></span>
+                <span className='icon-bar'/>
+                <span className='icon-bar'/>
+                <span className='icon-bar'/>
               </button>
-              <Link className='navbar-brand' to='app'>
-                <img width='20' src={logoImg}></img>
+              <Link className='navbar-brand' to='/'>
+                <img width='20' src={logo}/>
               </Link>
             </div>
             <div className='collapse navbar-collapse'>
               <ul className='nav navbar-nav navbar-right'>
-                <li><Link to='page-normal'>Page Normal</Link></li>
-                <li><Link to='page-nested'>Page Nested</Link></li>
+                <li><Link to='/normal'>Page Normal</Link></li>
+                <li><Link to='/nested'>Page Nested</Link></li>
                 <li><a href='/other'>Page Not Found</a></li>
               </ul>
             </div>
@@ -31,6 +32,7 @@ var Header = React.createClass({
       </header>
     );
   }
-});
+}
 
-module.exports = Header;
+export default Header;
+
