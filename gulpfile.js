@@ -2,8 +2,7 @@
 
 var pkg = require('./package.json');
 var gulp = require('gulp');
-var util = require('gulp-util');
-var favicons = require('favicons');
+var favicons = require('gulp-favicons');
 var eslint = require('gulp-eslint');
 var del = require('del');
 var webpackStatsHelper = require('./webpack-stats-helper');
@@ -20,28 +19,28 @@ var runSequence = require('run-sequence');
 var imagemin = require('gulp-imagemin');
 var pngquant = require('imagemin-pngquant');
 
-gulp.task('favicons', function (callback) {
-  favicons({
-    files: {
-      src: 'app/assets/images/favicon.png',
-      dest: 'app/assets/images/favicons',
-      html: 'app/_favicons.html',
-      iconsPath: '/assets/images/favicons'
-    },
-    settings: {
+var devHost = 'http://localhost:3000';
+var prodHost = 'http://example.com';
+var devFaviconsPath = '/assets/images/favicons/';
+var prodFaviconsPath = '/';
+
+gulp.task('favicons:clean', function () {
+  del.sync(['app/_favicons.html']);
+});
+
+gulp.task('favicons', ['favicons:clean'], function () {
+  return gulp.src('app/assets/images/favicon.png')
+    .pipe(favicons({
       appName: pkg.name,
       appDescription: pkg.description,
       version: pkg.version,
-      background: '#fff'
-    }
-  }, function (error, metadata) {
-    if (error) {
-      return callback(error);
-    }
-    util.log('Generated favicons at', util.colors.magenta('app/assets/images/favicons'));
-    util.log('Generated favicons metadata at', util.colors.magenta('app/_favicons.html'));
-    callback();
-  });
+      background: '#fff',
+      url: devHost + devFaviconsPath,
+      path: devFaviconsPath,
+      html: 'app/_favicons.html',
+      logging: true
+    }))
+    .pipe(gulp.dest('app' + devFaviconsPath));
 });
 
 gulp.task('lint', function () {
@@ -72,7 +71,7 @@ gulp.task('revFavicons', function () {
     }
   });
   return gulp
-    .src(['app/assets/images/favicons/**/*'])
+    .src(['app' + devFaviconsPath + '**/*'])
     .pipe(rev.revision())
     .pipe(gulp.dest('dist'))
     .pipe(rev.manifestFile())
@@ -82,8 +81,12 @@ gulp.task('revFavicons', function () {
 gulp.task('html', function () {
   var patterns = webpackStatsHelper.getReplacePatterns(path.join(__dirname, './dist/webpack.stats.json'));
   patterns.push({
-    pattern: /(\/assets\/images\/favicons\/)/g,
-    replacement: '/'
+    pattern: new RegExp(devFaviconsPath, 'g'),
+    replacement: prodFaviconsPath
+  });
+  patterns.push({
+    pattern: new RegExp(devHost.replace('//', '/'), 'g'),
+    replacement: prodHost
   });
   var manifest = gulp.src('dist/rev-favicons-manifest.json');
   return gulp.src(['app/*.html', '!app/_*.html'])
