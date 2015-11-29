@@ -38,7 +38,14 @@ module.exports = {
   resolve: {
     extensions: ['', '.jsx', '.js'],
     alias: {
-      app: path.join(__dirname, 'app')
+      app: path.join(__dirname, 'app'),
+      actions: path.join(__dirname, 'app/actions'),
+      assets: path.join(__dirname, 'app/assets'),
+      components: path.join(__dirname, 'app/components'),
+      constants: path.join(__dirname, 'app/constants'),
+      services: path.join(__dirname, 'app/services'),
+      stores: path.join(__dirname, 'app/stores'),
+      utils: path.join(__dirname, 'app/utils')
     }
   },
   module: {

@@ -2,12 +2,12 @@ import 'babel-core/polyfill';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import createHistory from 'history/lib/createBrowserHistory';
+import {createHistory} from 'history';
 import Router from 'react-router';
-import App from './components/App.js';
+import App from 'components/App';
 
-import './assets/bower_components/bootstrap-customize/css/bootstrap.css';
-import './assets/styles/app.scss';
+import 'assets/bower_components/bootstrap-customize/css/bootstrap.css';
+import 'assets/styles/app.scss';
 
 const routes = {
   path: '/',

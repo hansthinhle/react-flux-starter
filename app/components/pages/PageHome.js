@@ -1,5 +1,5 @@
 import React from 'react';
-import Document from '../common/Document.js';
+import Document from 'components/common/Document';
 
 class PageHome extends React.Component {
   render() {

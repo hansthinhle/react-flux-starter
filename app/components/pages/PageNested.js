@@ -1,5 +1,5 @@
 import React from 'react';
-import Document from '../common/Document.js';
+import Document from 'components/common/Document';
 import {Link} from 'react-router';
 
 class PageNested extends React.Component {
