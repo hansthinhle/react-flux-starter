@@ -2,7 +2,7 @@
 
 var pkg = require('./package.json');
 var gulp = require('gulp');
-var favicons = require('gulp-favicons');
+var favicons = require('favicons').stream;
 var eslint = require('gulp-eslint');
 var del = require('del');
 var webpackStatsHelper = require('./webpack-stats-helper');
@@ -24,11 +24,7 @@ var prodHost = 'http://example.com';
 var devFaviconsPath = '/assets/images/favicons/';
 var prodFaviconsPath = '/';
 
-gulp.task('favicons:clean', function () {
-  del.sync(['app/_favicons.html']);
-});
-
-gulp.task('favicons', ['favicons:clean'], function () {
+gulp.task('favicons', function () {
   return gulp.src('app/assets/images/favicon.png')
     .pipe(favicons({
       appName: pkg.name,
