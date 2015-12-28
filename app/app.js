@@ -3,7 +3,7 @@ import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {createHistory} from 'history';
-import {Router} from 'react-router';
+import Router from 'react-router';
 import App from 'components/App';
 
 import 'assets/bower_components/bootstrap-customize/css/bootstrap.css';
