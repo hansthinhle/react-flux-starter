@@ -9,18 +9,20 @@ var webpackStatsHelper = require('./webpack-stats-helper');
 var path = require('path');
 var RevAll = require('gulp-rev-all');
 var revReplace = require('gulp-rev-replace');
-var preProcess = require('gulp-preprocess');
+var preprocess = require('gulp-preprocess');
 var frep = require('gulp-frep');
-var minifyHtml = require('gulp-minify-html');
+var htmlmin = require('gulp-htmlmin');
 var webpackStream = require('webpack-stream');
 var webpackConfig = require('./webpack.prod.config');
 var webpack = require('webpack');
 var runSequence = require('run-sequence');
 var imagemin = require('gulp-imagemin');
 var pngquant = require('imagemin-pngquant');
+var url = require('url');
+var config = require('./config.json');
 
-var devHost = 'http://localhost:3000';
-var prodHost = 'http://example.com';
+var devURL = 'http://' + config.hostname + ':' + config.port;
+var prodURL = config.prodURL;
 var devFaviconsPath = '/assets/images/favicons/';
 var prodFaviconsPath = '/';
 
@@ -31,7 +33,7 @@ gulp.task('favicons', function () {
       appDescription: pkg.description,
       version: pkg.version,
       background: '#fff',
-      url: devHost + devFaviconsPath,
+      url: devURL + devFaviconsPath,
       path: devFaviconsPath,
       html: 'app/_favicons.html',
       logging: true
@@ -81,19 +83,19 @@ gulp.task('html', function () {
     replacement: prodFaviconsPath
   });
   patterns.push({
-    pattern: new RegExp(devHost.replace('//', '/'), 'g'),
-    replacement: prodHost
+    pattern: new RegExp(devURL, 'g'),
+    replacement: prodURL
   });
   var manifest = gulp.src('dist/rev-favicons-manifest.json');
   return gulp.src(['app/*.html', '!app/_*.html'])
-    .pipe(preProcess({
+    .pipe(preprocess({
       options: {
         srcDir: path.join(__dirname, 'app')
       }
     }))
     .pipe(frep(patterns))
     .pipe(revReplace({manifest: manifest}))
-    .pipe(minifyHtml())
+    .pipe(htmlmin({collapseWhitespace: true}))
     .pipe(gulp.dest('dist'));
 });
 
@@ -115,5 +117,5 @@ gulp.task('images', function () {
 });
 
 gulp.task('build', function (callback) {
-  runSequence('clean', 'webpack', 'revFavicons', 'html', 'copy', 'images', callback);
+  runSequence('clean', 'webpack', 'favicons', 'revFavicons', 'html', 'copy', 'images', callback);
 });

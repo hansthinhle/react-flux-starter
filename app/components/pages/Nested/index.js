@@ -2,7 +2,7 @@ import React from 'react';
 import Document from 'components/common/Document';
 import {Link} from 'react-router';
 
-class PageNested extends React.Component {
+class NestedPage extends React.Component {
   static propTypes = {
     children: React.PropTypes.node
   };
@@ -28,4 +28,4 @@ class PageNested extends React.Component {
   }
 }
 
-export default PageNested;
+export default NestedPage;

@@ -1,7 +1,7 @@
 import React from 'react';
 import Document from 'components/common/Document';
 
-class PageNestedDefault extends React.Component {
+class NestedDefaultPage extends React.Component {
   render() {
     return (
       <Document title='PageNested | React-Flux' className='page-nested-default'>
@@ -11,4 +11,4 @@ class PageNestedDefault extends React.Component {
   }
 }
 
-export default PageNestedDefault;
+export default NestedDefaultPage;

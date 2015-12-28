@@ -1,6 +1,6 @@
 # React Flux Starter
 
-React + Flux + React router + Webpack + Babel + ...
+React + Flux + React router + Webpack + Babel6 + ...
 
 ## Features included
 
@@ -9,7 +9,7 @@ React + Flux + React router + Webpack + Babel + ...
 - ESLint
 - Favicons generator (favicons)
 - Preprocess html (preprocess)
-- Minify html (gulp-minify-html) 
+- Minify html (gulp-htmlmin) 
 - Uglify js (UglifyJsPlugin)
 - Extract text from bundle into a file (extract-text-webpack-plugin)
 - Minify css (postcss, autoprefixer, cssnano)

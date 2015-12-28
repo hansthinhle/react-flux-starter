@@ -2,20 +2,20 @@ export default {
   path: 'nested',
   getComponent(location, callback) {
     require.ensure([], require => {
-      callback(null, require('../../components/pages/PageNested'));
+      callback(null, require('components/pages/Nested'));
     }, 'page-nested');
   },
   indexRoute: {
     getComponent(location, callback) {
       require.ensure([], require => {
-        callback(null, require('../../components/pages/PageNestedDefault'));
+        callback(null, require('components/pages/Nested/Default'));
       }, 'page-nested');
     }
   },
   getChildRoutes(location, callback) {
     require.ensure([], () => {
       callback(null, [
-        require('./NestedSubRoute')
+        require('./Sub')
       ]);
     }, 'page-nested');
   }

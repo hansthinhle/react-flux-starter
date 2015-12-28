@@ -11,7 +11,7 @@ var opn = require('opn');
 var httpProxy = require('http-proxy');
 var config = require('./config.json');
 
-var host = config.host || 'localhost';
+var host = config.hostname || 'localhost';
 var port = config.port || 3000;
 var proxyOptions = config.proxy || [];
 var serverUrl = 'http://' + host + ':' + port;

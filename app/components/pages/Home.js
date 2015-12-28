@@ -1,7 +1,7 @@
 import React from 'react';
 import Document from 'components/common/Document';
 
-class PageHome extends React.Component {
+class HomePage extends React.Component {
   render() {
     return (
       <Document title='Home | React-Flux' className='page-home'>
@@ -11,4 +11,4 @@ class PageHome extends React.Component {
   }
 }
 
-export default PageHome;
+export default HomePage;
