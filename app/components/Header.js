@@ -24,7 +24,7 @@ class Header extends React.Component {
               <ul className='nav navbar-nav navbar-right'>
                 <li><Link to='/normal'>Page Normal</Link></li>
                 <li><Link to='/nested'>Page Nested</Link></li>
-                <li><a href='/other'>Page Not Found</a></li>
+                <li><Link to='/other'>Page Not Found</Link></li>
               </ul>
             </div>
           </div>
