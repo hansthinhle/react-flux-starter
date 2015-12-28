@@ -1,7 +1,7 @@
 import React from 'react';
 import Document from 'components/common/Document';
 
-class PageNormal extends React.Component {
+class NormalPage extends React.Component {
   render() {
     return (
       <Document title='Page Normal | React-Flux' className='page-normal'>
@@ -11,5 +11,5 @@ class PageNormal extends React.Component {
   }
 }
 
-export default PageNormal;
+export default NormalPage;
 

@@ -1,15 +1,15 @@
 import React from 'react';
 import Document from 'components/common/Document';
 
-class PageNotFound extends React.Component {
+class NotFoundPage extends React.Component {
   render() {
     return (
-      <Document title='PageNotFound|React-Flux' className='page-not-found'>
+      <Document title='NotFoundPage|React-Flux' className='page-not-found'>
         <h1>Page Not Found</h1>
       </Document>
     );
   }
 }
 
-export default PageNotFound;
+export default NotFoundPage;
 

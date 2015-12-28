@@ -13,12 +13,12 @@ const routes = {
   path: '/',
   component: App,
   indexRoute: {
-    component: require('./components/pages/PageHome')
+    component: require('./components/pages/Home')
   },
   childRoutes: [
-    require('./routes/NormalRoute'),
-    require('./routes/NestedRoute'),
-    require('./routes/NotFoundRoute')
+    require('./routes/Normal'),
+    require('./routes/Nested'),
+    require('./routes/NotFound')
   ]
 };
 
