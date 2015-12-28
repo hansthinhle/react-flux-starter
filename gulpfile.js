@@ -18,9 +18,11 @@ var webpack = require('webpack');
 var runSequence = require('run-sequence');
 var imagemin = require('gulp-imagemin');
 var pngquant = require('imagemin-pngquant');
+var url = require('url');
+var config = require('./config.json');
 
-var devHost = 'http://localhost:3000';
-var prodHost = 'http://example.com';
+var devURL = 'http://' + config.hostname + ':' + config.port;
+var prodURL = config.prodURL;
 var devFaviconsPath = '/assets/images/favicons/';
 var prodFaviconsPath = '/';
 
@@ -31,7 +33,7 @@ gulp.task('favicons', function () {
       appDescription: pkg.description,
       version: pkg.version,
       background: '#fff',
-      url: devHost + devFaviconsPath,
+      url: devURL + devFaviconsPath,
       path: devFaviconsPath,
       html: 'app/_favicons.html',
       logging: true
@@ -81,8 +83,8 @@ gulp.task('html', function () {
     replacement: prodFaviconsPath
   });
   patterns.push({
-    pattern: new RegExp(devHost.replace('//', '/'), 'g'),
-    replacement: prodHost
+    pattern: new RegExp(devURL, 'g'),
+    replacement: prodURL
   });
   var manifest = gulp.src('dist/rev-favicons-manifest.json');
   return gulp.src(['app/*.html', '!app/_*.html'])
@@ -93,7 +95,7 @@ gulp.task('html', function () {
     }))
     .pipe(frep(patterns))
     .pipe(revReplace({manifest: manifest}))
-    .pipe(htmlmin())
+    .pipe(htmlmin({collapseWhitespace: true}))
     .pipe(gulp.dest('dist'));
 });
 
@@ -115,5 +117,5 @@ gulp.task('images', function () {
 });
 
 gulp.task('build', function (callback) {
-  runSequence('clean', 'webpack', 'revFavicons', 'html', 'copy', 'images', callback);
+  runSequence('clean', 'webpack', 'favicons', 'revFavicons', 'html', 'copy', 'images', callback);
 });
