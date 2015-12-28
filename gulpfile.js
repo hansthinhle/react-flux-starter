@@ -9,9 +9,9 @@ var webpackStatsHelper = require('./webpack-stats-helper');
 var path = require('path');
 var RevAll = require('gulp-rev-all');
 var revReplace = require('gulp-rev-replace');
-var preProcess = require('gulp-preprocess');
+var preprocess = require('gulp-preprocess');
 var frep = require('gulp-frep');
-var minifyHtml = require('gulp-minify-html');
+var htmlmin = require('gulp-htmlmin');
 var webpackStream = require('webpack-stream');
 var webpackConfig = require('./webpack.prod.config');
 var webpack = require('webpack');
@@ -86,14 +86,14 @@ gulp.task('html', function () {
   });
   var manifest = gulp.src('dist/rev-favicons-manifest.json');
   return gulp.src(['app/*.html', '!app/_*.html'])
-    .pipe(preProcess({
+    .pipe(preprocess({
       options: {
         srcDir: path.join(__dirname, 'app')
       }
     }))
     .pipe(frep(patterns))
     .pipe(revReplace({manifest: manifest}))
-    .pipe(minifyHtml())
+    .pipe(htmlmin())
     .pipe(gulp.dest('dist'));
 });
 
