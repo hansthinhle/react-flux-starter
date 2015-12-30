@@ -24,3 +24,7 @@ cd my-project
 npm install && bower install
 npm start
 ```
+
+## Note
+
+To use babel5 please switch to `babel5` branch.
