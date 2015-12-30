@@ -6,7 +6,7 @@ import {createHistory} from 'history';
 import Router from 'react-router';
 import App from 'components/App';
 
-import 'assets/bower_components/bootstrap-customize/css/bootstrap.css';
+import 'bootstrap/dist/css/bootstrap.css';
 import 'assets/styles/app.scss';
 
 const routes = {

@@ -8,6 +8,7 @@
     "build": "NODE_ENV=production gulp build"
   },
   "dependencies": {
+    "bootstrap": "^3.3.6",
     "flux": "^2.1.1",
     "react": "^0.14.3",
     "react-dom": "^0.14.3",
