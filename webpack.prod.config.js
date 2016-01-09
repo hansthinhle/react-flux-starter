@@ -1,16 +1,17 @@
-var webpack = require('webpack');
-var path = require('path');
-var autoprefixer = require('autoprefixer');
-var cssnano = require('cssnano');
-var webpackStatsHelper = require('./webpack-stats-helper');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+import webpack from 'webpack';
+import path from 'path';
+import autoprefixer from 'autoprefixer';
+import cssnano from 'cssnano';
+import StatsPlugin from './webpack-stats-plugin';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import pkg from './package.json';
 
-var scssIncludePaths = [
+const scssIncludePaths = [
   path.join(__dirname, 'app/assets/bower_components'),
   path.join(__dirname, 'node_modules')
 ];
 
-var autoprefixerOptions = {
+const autoprefixerOptions = {
   browsers: [
     'ie >= 10',
     'ie_mob >= 10',
@@ -24,7 +25,7 @@ var autoprefixerOptions = {
   ]
 };
 
-module.exports = {
+export default {
   entry: {
     app: path.join(__dirname, 'app/app.js')
   },
@@ -96,7 +97,8 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV)
-      }
+      },
+      'pkg': JSON.stringify(pkg)
     }),
     new ExtractTextPlugin('[contenthash].css'),
     new webpack.optimize.UglifyJsPlugin({
@@ -109,14 +111,14 @@ module.exports = {
       }
     }),
     new webpack.optimize.DedupePlugin(),
-    new webpackStatsHelper.StatsToFilePlugin(path.join(__dirname, 'dist/webpack.stats.json'))
+    new StatsPlugin('dist/webpack.stats.json')
   ],
   eslint: {
     configFile: path.join(__dirname, '.eslintrc'),
     failOnError: true,
     emitError: true
   },
-  postcss: function () {
+  postcss: () => {
     return [
       autoprefixer(autoprefixerOptions),
       cssnano({
