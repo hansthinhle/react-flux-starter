@@ -6,7 +6,7 @@
     "start": "NODE_ENV=development gulp start",
     "test": "NODE_ENV=development gulp test",
     "build": "NODE_ENV=production gulp build",
-    "lint": "eslint ./tasks"
+    "lint-tasks": "eslint ./tasks"
   },
   "dependencies": {
     "bootstrap": "^3.3.6",
