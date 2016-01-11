@@ -3,9 +3,10 @@
   "version": "0.0.0",
   "description": "",
   "scripts": {
-    "start": "NODE_ENV=development node webpack.dev.server.js",
-    "lint": "NODE_ENV=development gulp lint",
-    "build": "NODE_ENV=production gulp build"
+    "start": "NODE_ENV=development gulp start",
+    "test": "NODE_ENV=development gulp test",
+    "build": "NODE_ENV=production gulp build",
+    "lint-tasks": "eslint ./tasks"
   },
   "dependencies": {
     "bootstrap": "^3.3.6",
@@ -16,6 +17,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^6.1.1",
+    "babel-cli": "^6.4.0",
     "babel-core": "^6.3.26",
     "babel-eslint": "^5.0.0-beta6",
     "babel-loader": "^6.2.0",
@@ -58,6 +60,7 @@
     "run-sequence": "^1.1.5",
     "sass-loader": "^3.1.2",
     "style-loader": "^0.13.0",
+    "task-dir": "^0.2.0",
     "webpack": "^1.12.8",
     "webpack-dev-middleware": "^1.2.0",
     "webpack-hot-middleware": "^2.5.0",

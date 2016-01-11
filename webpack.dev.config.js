@@ -1,13 +1,14 @@
-var webpack = require('webpack');
-var path = require('path');
-var autoprefixer = require('autoprefixer');
+import webpack from 'webpack';
+import path from 'path';
+import autoprefixer from 'autoprefixer';
+import pkg from './package.json';
 
-var scssIncludePaths = [
+const scssIncludePaths = [
   path.join(__dirname, 'app/assets/bower_components'),
   path.join(__dirname, 'node_modules')
 ];
 
-var autoprefixerOptions = {
+const autoprefixerOptions = {
   browsers: [
     'ie >= 10',
     'ie_mob >= 10',
@@ -21,9 +22,9 @@ var autoprefixerOptions = {
   ]
 };
 
-module.exports = {
+export default {
   entry: {
-    app: ['webpack-hot-middleware/client', path.join(__dirname, 'app/app.js')]
+    app: ['webpack-hot-middleware/client?reload=true', path.join(__dirname, 'app/app.js')]
   },
   output: {
     path: path.join(__dirname, 'dist'),
@@ -79,7 +80,7 @@ module.exports = {
         loader: 'style-loader!css-loader!postcss-loader!less-loader'
       },
       {
-        test: /\.(png|jpg|gif)$/,
+        test: /\.(png|jpg|gif|swf)$/,
         loader: 'file-loader?name=[name].[ext]'
       },
       {
@@ -92,17 +93,17 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV)
-      }
+      },
+      'pkg': JSON.stringify(pkg)
     }),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
+    new webpack.HotModuleReplacementPlugin()
   ],
   eslint: {
     configFile: path.join(__dirname, '.eslintrc'),
     failOnError: false,
     emitError: false
   },
-  postcss: function () {
+  postcss: () => {
     return [autoprefixer(autoprefixerOptions)];
   },
   node: {
