@@ -19,7 +19,7 @@ export default () => {
     replacement: '/'
   });
   patterns.push({
-    pattern: new RegExp(devURL.replace('//', '/'), 'g'),
+    pattern: new RegExp(devURL, 'g'),
     replacement: prodURL
   });
   let manifest = gulp.src('dist/rev-favicons-manifest.json');
