@@ -5,7 +5,6 @@ import cssnano from 'cssnano';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import ManifestPlugin from 'webpack-manifest-plugin'
-import pkg from './package.json';
 
 const scssIncludePaths = [
   path.join(__dirname, 'app/assets/bower_components'),
@@ -102,8 +101,7 @@ export default {
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV)
-      },
-      'pkg': JSON.stringify(pkg)
+      }
     }),
     new HtmlWebpackPlugin({
       template: 'app/index.html'

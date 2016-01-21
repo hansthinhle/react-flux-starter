@@ -2,7 +2,6 @@ import webpack from 'webpack';
 import path from 'path';
 import autoprefixer from 'autoprefixer';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import pkg from './package.json';
 
 const scssIncludePaths = [
   path.join(__dirname, 'app/assets/bower_components'),
@@ -98,8 +97,7 @@ export default {
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV)
-      },
-      'pkg': JSON.stringify(pkg)
+      }
     }),
     new HtmlWebpackPlugin({
       template: 'app/index.html'
