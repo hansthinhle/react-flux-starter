@@ -1,6 +1,7 @@
 import webpack from 'webpack';
 import path from 'path';
 import autoprefixer from 'autoprefixer';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 import pkg from './package.json';
 
 const scssIncludePaths = [
@@ -86,6 +87,10 @@ export default {
       {
         test: /\.(ttf|eot|svg|woff(2)?)(\S+)?$/,
         loader: 'file-loader?name=[name].[ext]'
+      },
+      {
+        test: /\.html$/,
+        loader: 'html-loader?interpolate'
       }
     ]
   },
@@ -95,6 +100,9 @@ export default {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV)
       },
       'pkg': JSON.stringify(pkg)
+    }),
+    new HtmlWebpackPlugin({
+      template: 'app/index.html'
     }),
     new webpack.HotModuleReplacementPlugin()
   ],

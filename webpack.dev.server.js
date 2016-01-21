@@ -60,10 +60,7 @@ proxyOptions.forEach(option => {
 });
 
 app.get('*', (req, res) => {
-  let indexSource = fs.readFileSync(path.join(__dirname, 'app/index.html'));
-  res.send(preProcess.preprocess(indexSource, null, {
-    srcDir: path.join(__dirname, 'app')
-  }));
+  res.sendFile(path.join(__dirname, 'app/index.html'));
 });
 
 const server = http.createServer(app);

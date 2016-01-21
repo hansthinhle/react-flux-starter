@@ -2,8 +2,9 @@ import webpack from 'webpack';
 import path from 'path';
 import autoprefixer from 'autoprefixer';
 import cssnano from 'cssnano';
-import StatsPlugin from './webpack-stats-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import ManifestPlugin from 'webpack-manifest-plugin'
 import pkg from './package.json';
 
 const scssIncludePaths = [
@@ -90,6 +91,10 @@ export default {
       {
         test: /\.(ttf|eot|svg|woff(2)?)(\S+)?$/,
         loader: 'file-loader?name=[hash].[ext]'
+      },
+      {
+        test: /\.html$/,
+        loader: 'html-loader?interpolate'
       }
     ]
   },
@@ -99,6 +104,9 @@ export default {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV)
       },
       'pkg': JSON.stringify(pkg)
+    }),
+    new HtmlWebpackPlugin({
+      template: 'app/index.html'
     }),
     new ExtractTextPlugin('[contenthash].css'),
     new webpack.optimize.UglifyJsPlugin({
@@ -111,7 +119,9 @@ export default {
       }
     }),
     new webpack.optimize.DedupePlugin(),
-    new StatsPlugin('dist/webpack.stats.json')
+    new ManifestPlugin({
+      fileName: 'webpack-manifest.json'
+    })
   ],
   eslint: {
     configFile: path.join(__dirname, '.eslintrc'),
