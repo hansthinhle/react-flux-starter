@@ -5,7 +5,6 @@ import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import fs from 'fs';
 import path from 'path';
-import preProcess from 'preprocess';
 import http from 'http';
 import opn from 'opn';
 import httpProxy from 'http-proxy';
