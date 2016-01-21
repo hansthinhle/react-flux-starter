@@ -1,6 +1,6 @@
 # React Flux Starter
 
-React + Flux + React router + Webpack + Babel6 + ...
+React + Flux + React router + Webpack + Babel5 + ...
 
 ## Features included
 
