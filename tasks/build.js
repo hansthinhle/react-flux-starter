@@ -6,5 +6,5 @@ import path from 'path';
 taskDir(gulp, path.join(__dirname, 'build'));
 
 export default (callback) => {
-  runSequence('build:clean', 'build:webpack', 'build:favicons', 'build:images', 'build:copy', 'build:replace', callback);
+  runSequence('build:clean', 'build:favicons', 'build:webpack', 'build:images', 'build:copy', 'build:replace', callback);
 };
