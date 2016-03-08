@@ -1,32 +1,33 @@
+import url from 'url';
 import express from 'express';
 import webpack from 'webpack';
-import webpackDevConfig from './webpack.dev.config';
+import webpackConfig from './webpack.config';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import fs from 'fs';
 import path from 'path';
 import http from 'http';
+import https from 'https'
 import opn from 'opn';
 import httpProxy from 'http-proxy';
 import config from './config.json';
 
-const hostname = config.hostname || 'localhost';
-const port = config.port || 3000;
+const devURL = config.devURL || 'http://localhost:3000';
+const urlParts = url.parse(devURL);
 const proxyOptions = config.proxy || [];
-const serverUrl = `http://${hostname}:${port}`;
 
 const proxy = httpProxy.createProxyServer({
   changeOrigin: true,
   ws: true
 });
 
-const compiler = webpack(webpackDevConfig);
+const compiler = webpack(webpackConfig);
 
 const app = express();
 
 app.use(webpackDevMiddleware(compiler, {
   noInfo: true,
-  publicPath: webpackDevConfig.output.publicPath,
+  publicPath: webpackConfig.output.publicPath,
   stats: {
     colors: true,
     hash: false,
@@ -70,9 +71,15 @@ app.get('*', (req, res, next) => {
   });
 });
 
-const server = http.createServer(app);
+let server = http.createServer(app);
+if (urlParts.protocol === 'https:') {
+  server = https.createServer({
+    key: fs.readFileSync('key.pem'),
+    cert: fs.readFileSync('cert.pem')
+  }, app);
+}
 
-server.listen(port, () => {
-  console.log('Listening at ' + serverUrl);
-  opn(serverUrl);
+server.listen(urlParts.port, () => {
+  console.log('Listening at ' + devURL);
+  opn(devURL);
 });

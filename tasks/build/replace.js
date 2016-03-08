@@ -2,9 +2,7 @@ import gulp from 'gulp';
 import frep from 'gulp-frep';
 import config from '../../config.json';
 
-const hostname = config.hostname || 'localhost';
-const port = config.port || 3000;
-const devURL = `http://${hostname}:${port}`;
+const devURL = config.devURL;
 const prodURL = config.prodURL;
 
 export default () => {

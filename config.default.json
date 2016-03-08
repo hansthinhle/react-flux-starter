@@ -1,6 +1,6 @@
 {
-  "hostname": "localhost",
-  "port": 3000,
+  "devURL": "http://localhost:3000",
+  "prodURL": "http://example.com",
   "proxy": [
     {
       "path": "/api/*",
@@ -10,6 +10,5 @@
       "path": "/oauth/*",
       "target": "http://localhost:4000"
     }
-  ],
-  "prodURL": "http://example.com"
+  ]
 }

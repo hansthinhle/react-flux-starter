@@ -1,7 +1,7 @@
 import gulp from 'gulp';
 import webpackStream from 'webpack-stream';
 import webpack from 'webpack';
-import webpackConfig from '../../webpack.prod.config';
+import webpackConfig from '../../webpack.config';
 
 export default () => {
   return gulp

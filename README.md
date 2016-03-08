@@ -24,3 +24,14 @@ cd example
 npm install && bower install
 npm start
 ```
+
+## HTTPS server
+
+### Change config.json
+- Change devURL from `http://localhost:3000` to `https://localhost:3000`.
+ 
+### Generate self-signed certificate
+
+```bash
+openssl genrsa -out key.pem && openssl req -new -key key.pem -out csr.pem && openssl x509 -req -days 9999 -in csr.pem -signkey key.pem -out cert.pem && rm csr.pem
+```

@@ -6,6 +6,10 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import ManifestPlugin from 'webpack-manifest-plugin'
 
+const ENV = process.env.NODE_ENV || 'development';
+const DEV = ENV === 'development';
+const PROD = ENV === 'production';
+
 const scssIncludePaths = [
   path.join(__dirname, 'app/assets/bower_components'),
   path.join(__dirname, 'node_modules')
@@ -25,15 +29,17 @@ const autoprefixerOptions = {
   ]
 };
 
-export default {
+const webpackConfig = {
   entry: {
-    app: path.join(__dirname, 'app/app.js')
+    app: PROD
+      ? path.join(__dirname, 'app/app.js')
+      : ['webpack-hot-middleware/client?reload=true', path.join(__dirname, 'app/app.js')]
   },
   output: {
     path: path.join(__dirname, 'dist'),
+    filename: PROD ? '[hash].js' : '[name].js',
+    chunkFilename: PROD ? '[chunkhash].js' : '[name].chunk.js',
     hashDigestLength: 32,
-    filename: '[hash].js',
-    chunkFilename: '[chunkhash].js',
     publicPath: '/'
   },
   resolve: {
@@ -69,27 +75,39 @@ export default {
       },
       {
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader!')
+        loader: PROD
+          ? ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader!')
+          : 'style-loader!css-loader'
       },
       {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader!sass-loader?outputStyle=expanded&' + scssIncludePaths.join('&includePaths[]='))
+        loader: PROD
+          ? ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader!sass-loader?outputStyle=expanded&' + scssIncludePaths.join('&includePaths[]='))
+          : 'style-loader!css-loader!postcss-loader!sass-loader?outputStyle=expanded&' + scssIncludePaths.join('&includePaths[]=')
       },
       {
         test: /\.sass$/,
-        loader: ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader!sass-loader?indentedSyntax=sass')
+        loader: PROD
+          ? ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader!sass-loader?indentedSyntax=sass')
+          : 'style-loader!css-loader!postcss-loader!sass-loader?indentedSyntax=sass'
       },
       {
         test: /\.less$/,
-        loader: ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader!less-loader')
+        loader: PROD
+          ? ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader!less-loader')
+          : 'style-loader!css-loader!postcss-loader!less-loader'
       },
       {
         test: /\.(png|jpg|gif|swf)$/,
-        loader: 'file-loader?name=[hash].[ext]'
+        loader: PROD
+          ? 'file-loader?name=[hash].[ext]'
+          : 'file-loader?name=[name].[ext]'
       },
       {
         test: /\.(ttf|eot|svg|woff(2)?)(\S+)?$/,
-        loader: 'file-loader?name=[hash].[ext]'
+        loader: PROD
+          ? 'file-loader?name=[hash].[ext]'
+          : 'file-loader?name=[name].[ext]'
       },
       {
         test: /\.html$/,
@@ -100,12 +118,44 @@ export default {
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: JSON.stringify(process.env.NODE_ENV)
+        NODE_ENV: JSON.stringify(ENV)
       }
     }),
     new HtmlWebpackPlugin({
       template: 'app/index.html'
-    }),
+    })
+  ],
+  eslint: {
+    configFile: path.join(__dirname, '.eslintrc'),
+    failOnError: false,
+    emitError: false
+  },
+  postcss: () => {
+    if (PROD) {
+      return [
+        autoprefixer(autoprefixerOptions),
+        cssnano({
+          safe: true,
+          discardComments: {removeAll: true}
+        })
+      ];
+    }
+    return [autoprefixer(autoprefixerOptions)];
+  },
+  node: {
+    net: 'mock',
+    dns: 'mock'
+  },
+  debug: DEV
+};
+
+if (DEV) {
+  webpackConfig.plugins.push(new webpack.HotModuleReplacementPlugin());
+  webpackConfig.devtool = 'eval';
+}
+
+if (PROD) {
+  webpackConfig.plugins = webpackConfig.plugins.concat([
     new ExtractTextPlugin('[contenthash].css'),
     new webpack.optimize.UglifyJsPlugin({
       sourceMap: false,
@@ -120,31 +170,15 @@ export default {
     new ManifestPlugin({
       fileName: 'webpack-manifest.json'
     })
-  ],
-  eslint: {
-    configFile: path.join(__dirname, '.eslintrc'),
-    failOnError: true,
-    emitError: true
-  },
-  postcss: () => {
-    return [
-      autoprefixer(autoprefixerOptions),
-      cssnano({
-        safe: true,
-        discardComments: {removeAll: true}
-      })
-    ];
-  },
-  node: {
-    net: 'mock',
-    dns: 'mock'
-  },
-  stats: {
+  ]);
+  webpackConfig.stats = {
     children: false,
     version: false
-  },
-  debug: false,
-  progress: true,
-  profile: true,
-  bail: true
-};
+  };
+  webpackConfig.progress = true;
+  webpackConfig.profile = true;
+  webpackConfig.bail = true;
+}
+
+export default webpackConfig;
+

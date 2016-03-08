@@ -3,9 +3,7 @@ import {stream as favicons} from 'favicons';
 import pkg from '../../../package.json';
 import config from '../../../config.json';
 
-const hostname = config.hostname || 'localhost';
-const port = config.port || 3000;
-const devURL = `http://${hostname}:${port}`;
+const devURL = config.devURL;
 
 export default () => {
   return gulp.src('app/assets/images/favicon.png')
