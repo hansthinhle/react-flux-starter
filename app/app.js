@@ -2,8 +2,7 @@ import 'babel-core/polyfill';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {createHistory} from 'history';
-import Router from 'react-router';
+import {Router, browserHistory} from 'react-router';
 import App from 'components/App';
 
 import 'bootstrap/dist/css/bootstrap.css';
@@ -22,11 +21,9 @@ const routes = {
   ]
 };
 
-const history = createHistory();
-
 const run = () => {
   ReactDOM.render(
-    <Router routes={routes} history={history}/>,
+    <Router routes={routes} history={browserHistory}/>,
     document.getElementById('app')
   );
 };
