@@ -15,9 +15,8 @@ const routes = {
     component: require('./components/pages/Home')
   },
   childRoutes: [
-    require('./routes/Normal'),
-    require('./routes/Nested'),
-    require('./routes/NotFound')
+    require('routes/Sample'),
+    require('routes/NotFound')
   ]
 };
 

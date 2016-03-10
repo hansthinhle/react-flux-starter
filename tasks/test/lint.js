@@ -3,7 +3,7 @@ import eslint from 'gulp-eslint';
 
 export default () => {
   return gulp
-    .src(['app/**/*.js', '!app/assets/bower_components/**/*'])
+    .src(['app/**/*.js'])
     .pipe(eslint())
     .pipe(eslint.format())
     .pipe(eslint.failAfterError());

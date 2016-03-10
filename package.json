@@ -1,7 +1,7 @@
 {
   "name": "react-flux-starter",
   "version": "0.0.0",
-  "description": "",
+  "description": "React flux starter",
   "scripts": {
     "start": "NODE_ENV=development gulp start",
     "test": "NODE_ENV=development gulp test",

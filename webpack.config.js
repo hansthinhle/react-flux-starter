@@ -11,7 +11,7 @@ const DEV = ENV === 'development';
 const PROD = ENV === 'production';
 
 const scssIncludePaths = [
-  path.join(__dirname, 'app/assets/bower_components'),
+  path.join(__dirname, 'bower_components'),
   path.join(__dirname, 'node_modules')
 ];
 
@@ -44,6 +44,7 @@ const webpackConfig = {
   },
   resolve: {
     root: path.join(__dirname, 'app'),
+    modulesDirectories: ['node_modules', 'bower_components'],
     extensions: ['', '.jsx', '.js'],
     alias: {
       actions: path.join(__dirname, 'app/actions'),

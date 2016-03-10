@@ -22,9 +22,7 @@ class Header extends React.Component {
             </div>
             <div className='collapse navbar-collapse'>
               <ul className='nav navbar-nav navbar-right'>
-                <li><Link to='/normal'>Page Normal</Link></li>
-                <li><Link to='/nested'>Page Nested</Link></li>
-                <li><Link to='/other'>Page Not Found</Link></li>
+                <li><Link to='/sample'>Page Sample</Link></li>
               </ul>
             </div>
           </div>
