@@ -4,7 +4,7 @@ import autoprefixer from 'autoprefixer';
 import cssnano from 'cssnano';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
-import ManifestPlugin from 'webpack-manifest-plugin'
+import ManifestPlugin from 'webpack-manifest-plugin';
 
 const ENV = process.env.NODE_ENV || 'development';
 const DEV = ENV === 'development';
