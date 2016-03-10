@@ -12,7 +12,7 @@ const routes = {
   path: '/',
   component: App,
   indexRoute: {
-    component: require('./components/pages/Home')
+    component: require('components/pages/Home')
   },
   childRoutes: [
     require('routes/Sample'),

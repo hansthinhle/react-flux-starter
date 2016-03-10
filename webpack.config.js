@@ -123,7 +123,7 @@ const webpackConfig = {
       }
     }),
     new HtmlWebpackPlugin({
-      template: 'app/index.html'
+      template: path.join(__dirname, 'app/index.html')
     })
   ],
   eslint: {
