@@ -33,7 +33,7 @@ const webpackConfig = {
   entry: {
     app: PROD
       ? path.join(__dirname, 'app/app.js')
-      : ['webpack-hot-middleware/client?reload=true', path.join(__dirname, 'app/app.js')]
+      : ['webpack-hot-middleware/client?reload=true&quiet=true', path.join(__dirname, 'app/app.js')]
   },
   output: {
     path: path.join(__dirname, 'dist'),
